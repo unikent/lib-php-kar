@@ -87,7 +87,7 @@ class Publication
         $obj = new static($api);
 
         foreach ((array)$data as $k => $v) {
-            if (in_array($k, array('authors', 'editors', 'reviewers'))) {
+            if (in_array($k, array('authors', 'editors', 'reviewers', 'funders'))) {
                 continue;
             }
 
