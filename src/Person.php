@@ -58,15 +58,25 @@ class Person
      *
      * @internal
      * @param object $api The API we are related to.
-     * @param string $firstname Firstname.
-     * @param string $lastname Lastname.
-     * @param string $email Email.
      */
-    public function __construct($api, $firstname = '', $lastname = '', $email = '') {
+    private function __construct($api) {
         $this->_api = $api;
-        $this->set_firstname($firstname);
-        $this->set_lastname($lastname);
-        $this->set_email($email);
+    }
+
+    /**
+     * Create a person from a JSON object.
+     *
+     * @internal
+     * @param object $api The API we are related to.
+     * @param object $data The data.
+     */
+    public static function create_from_api($api, $data) {
+        $person = new static($api);
+        $person->set_firstname($data->given_name);
+        $person->set_lastname($data->family_name);
+        $person->set_email($data->email);
+
+        return $person;
     }
 
     /**

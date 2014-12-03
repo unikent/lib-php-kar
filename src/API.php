@@ -79,6 +79,13 @@ class API
     }
 
     /**
+     * Returns the URL.
+     */
+    public function get_url() {
+        return $this->_url;
+    }
+
+    /**
      * Set a custom CURL timeout
      *
      * @param int $timeout CURL Timeout in ms
@@ -93,8 +100,15 @@ class API
      * @param string $email The 
      */
     public function search_author($email) {
-        $results = $this->curl($this->_url . static::API_ENDPOINT . "?q=" . urlencode($email));
-        return json_decode($results);
+        $json = $this->curl($this->_url . static::API_ENDPOINT . "?q=" . urlencode($email));
+        $objects = json_decode($json);
+
+        foreach ($objects as $k => $v) {
+            $object = Publication::create_from_api($this, $v);
+            $objects[$k] = $object;
+        }
+
+        return $objects;
     }
 
     /**

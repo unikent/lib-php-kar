@@ -6,7 +6,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once("vendor/autoload.php");
+require_once(dirname(__FILE__) . "/../../src/API.php");
+require_once(dirname(__FILE__) . "/../../src/Person.php");
+require_once(dirname(__FILE__) . "/../../src/Publication.php");
 
 if (!isset($argv[1])) {
     die("Usage: php run.php <author email>\n");
@@ -15,8 +17,8 @@ if (!isset($argv[1])) {
 $api = new \unikent\KAR\API('https://kar-test.kent.ac.uk');
 
 $documents = $api->search_author($argv[1]);
-print_r($documents);die;
+
 foreach ($documents as $document) {
     echo "---------------------------------\n";
-    echo $document;
+    echo $document->get_url() . "\n";
 }
