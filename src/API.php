@@ -23,7 +23,7 @@ class API
     /**
      * URL of the Training KAR system.
      */
-    const TRAINING_URL = 'https://kar.kent.ac.uk';
+    const TRAINING_URL = 'https://kar-training.kent.ac.uk';
 
     /**
      * API Endpoint URL.
@@ -75,7 +75,7 @@ class API
             $url = static::LIVE_URL;
         }
 
-        $this->_url = $url . static::API_ENDPOINT;
+        $this->_url = $url;
     }
 
     /**
@@ -93,7 +93,7 @@ class API
      * @param string $email The 
      */
     public function search_author($email) {
-        $results = $this->curl($this->_url . "?q=" . urlencode($email));
+        $results = $this->curl($this->_url . static::API_ENDPOINT . "?q=" . urlencode($email));
         return json_decode($results);
     }
 
