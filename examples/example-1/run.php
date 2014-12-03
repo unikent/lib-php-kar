@@ -8,13 +8,14 @@
 
 require_once("vendor/autoload.php");
 
-if (!isset($ARGV[1])) {
+if (!isset($argv[1])) {
     die("Usage: php run.php <author email>\n");
 }
 
-$api = new \unikent\KAR\API();
+$api = new \unikent\KAR\API('https://kar-test.kent.ac.uk');
 
-$documents = $api->search_author($ARGV[1]);
+$documents = $api->search_author($argv[1]);
+print_r($documents);die;
 foreach ($documents as $document) {
     echo "---------------------------------\n";
     echo $document;
