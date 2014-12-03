@@ -147,4 +147,11 @@ class Person
 
         return $this->_publications;
     }
+
+    /**
+     * To String.
+     */
+    public function __toString() {
+        return $this->get_firstname() . " " . $this->get_lastname();
+    }
 }

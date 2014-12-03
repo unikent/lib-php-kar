@@ -20,5 +20,5 @@ $documents = $api->search_author($argv[1]);
 
 foreach ($documents as $document) {
     echo "---------------------------------\n";
-    echo $document->get_url() . "\n";
+    echo $document;
 }

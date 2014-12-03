@@ -197,4 +197,15 @@ class Publication
     public function get_url() {
         return $this->_api->get_url() . "/" . $this->get_id();
     }
+
+    /**
+     * To String.
+     */
+    public function __toString() {
+        $str = $this->get_title() . "\n";
+        $str .= "By " . implode(', ', $this->_authors) . "\n";
+        $str .= "See " . $this->get_url() . "\n";
+
+        return $str;
+    }
 }
