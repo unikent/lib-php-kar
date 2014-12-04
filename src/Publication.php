@@ -192,6 +192,13 @@ class Publication
     }
 
     /**
+     * Returns the publication type.
+     */
+    public function get_type() {
+        return $this->_data['type'];
+    }
+
+    /**
      * Returns the publication URL.
      */
     public function get_url() {
