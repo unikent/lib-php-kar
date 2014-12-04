@@ -99,8 +99,8 @@ class API
      *
      * @param string $email The 
      */
-    public function search_author($email) {
-        $json = $this->curl($this->_url . static::API_ENDPOINT . "?q=" . urlencode($email));
+    public function search_author($email, $limit = 1000) {
+        $json = $this->curl($this->_url . static::API_ENDPOINT . "?q=" . urlencode($email) ."&limit=" . urlencode($limit));
         $objects = json_decode($json);
 
         foreach ($objects as $k => $v) {
