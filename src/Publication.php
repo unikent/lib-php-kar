@@ -222,7 +222,7 @@ class Publication
             return "";
         }
 
-        return substr($url, strpos($url, '.') + 1);
+        return substr($url, strrpos($url, '.') + 1);
     }
 
     /**
