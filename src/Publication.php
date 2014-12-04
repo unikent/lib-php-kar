@@ -208,7 +208,7 @@ class Publication
         }
 
         $parts = explode(';', $fileinfo);
-        $filename = array_pop($fileinfo);
+        $filename = array_pop($parts);
 
         return $this->_api->get_url() . "/" . $filename;
     }
