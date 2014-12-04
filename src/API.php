@@ -26,12 +26,6 @@ class API
     const TRAINING_URL = 'https://kar-training.kent.ac.uk';
 
     /**
-     * API Endpoint URL.
-     * This uses version 2.
-     */
-    const API_ENDPOINT = '/cgi/api/search';
-
-    /**
      * CURL Timeout.
      * 
      * @internal
@@ -100,7 +94,7 @@ class API
      * @param string $email The 
      */
     public function search_author($email, $limit = 1000) {
-        $json = $this->curl($this->_url . static::API_ENDPOINT . "?q=" . urlencode($email) ."&limit=" . urlencode($limit));
+        $json = $this->curl($this->_url . "/cgi/api/search?q=" . urlencode($email) ."&limit=" . urlencode($limit));
         $objects = json_decode($json);
 
         foreach ($objects as $k => $v) {
@@ -109,6 +103,13 @@ class API
         }
 
         return $objects;
+    }
+
+    /**
+     * Returns the URL for an author.
+     */
+    public function get_author_url($email) {
+        return $this->_url . "/view/email/" . urlencode($email) ".html";
     }
 
     /**
