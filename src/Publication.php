@@ -217,7 +217,7 @@ class Publication
      * Returns the publication's document's Type.
      */
     public function get_file_type() {
-        $url = $this->get_document_url();
+        $url = $this->get_file_url();
         if (strpos($url, '.') === false) {
             return "";
         }
