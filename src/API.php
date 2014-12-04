@@ -109,7 +109,7 @@ class API
      * Returns the URL for an author.
      */
     public function get_author_url($email) {
-        return $this->_url . "/view/email/" . urlencode($email) ".html";
+        return $this->_url . "/view/email/" . urlencode($email) . ".html";
     }
 
     /**
