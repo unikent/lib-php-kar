@@ -106,10 +106,21 @@ class API
     }
 
     /**
+     * Encode a string in EPrints URL format.
+     */
+    public function encode_string($string) {
+        $string = urlencode($string);
+        $string = str_replace('%', '=', $string);
+        $string = str_replace('.', '=2E', $string);
+
+        return $string;
+    }
+
+    /**
      * Returns the URL for an author.
      */
     public function get_author_url($email) {
-        return $this->_url . "/view/email/" . urlencode($email) . ".html";
+        return $this->_url . "/view/email/" . $this->encode_string($email) . ".html";
     }
 
     /**

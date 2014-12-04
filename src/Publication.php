@@ -178,17 +178,17 @@ class Publication
     }
 
     /**
-     * Returns the page range.
-     */
-    public function get_page_range() {
-        return $this->_data['page_range'];
-    }
-
-    /**
      * Returns the number.
      */
     public function get_number() {
         return $this->_data['number'];
+    }
+
+    /**
+     * Returns the page range.
+     */
+    public function get_page_range() {
+        return $this->_data['page_range'];
     }
 
     /**
