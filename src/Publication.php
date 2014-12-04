@@ -199,6 +199,33 @@ class Publication
     }
 
     /**
+     * Returns the publication's document's URL.
+     */
+    public function get_document_url() {
+        $fileinfo = $this->_data['fileinfo'];
+        if (strpos($fileinfo, ';') === false) {
+            return "";
+        }
+
+        $parts = explode(';', $fileinfo);
+        $filename = array_pop($fileinfo);
+
+        return $this->_api->get_url() . "/" . $filename;
+    }
+
+    /**
+     * Returns the publication's document's Type.
+     */
+    public function get_document_typel() {
+        $url = $this->get_document_url();
+        if (strpos($url, '.') === false) {
+            return "";
+        }
+
+        return substr($url, strpos($url, '.') + 1);
+    }
+
+    /**
      * Returns the publication URL.
      */
     public function get_url() {
