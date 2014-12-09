@@ -91,7 +91,8 @@ class API
     /**
      * Search KAR for a given author's emails.
      *
-     * @param string $email The 
+     * @param string $email The author's email.
+     * @param int $limit The maximum number of results to return.
      */
     public function search_author($email, $limit = 1000) {
         $json = $this->curl($this->_url . "/cgi/api/search?q=" . urlencode($email) ."&limit=" . urlencode($limit));
@@ -107,6 +108,9 @@ class API
 
     /**
      * Encode a string in EPrints URL format.
+     *
+     * @internal
+     * @param string $string The string to encode.
      */
     public function encode_string($string) {
         $string = urlencode($string);
@@ -118,6 +122,10 @@ class API
 
     /**
      * Returns the URL for an author.
+     *
+     * @deprecated It is preferred you use the get_url() method in Person
+     * @see \unikent\KAR\Person::get_url
+     * @param string $email The author's email.
      */
     public function get_author_url($email) {
         return $this->_url . "/view/email/" . $this->encode_string($email) . ".html";
