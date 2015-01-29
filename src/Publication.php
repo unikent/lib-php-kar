@@ -8,11 +8,21 @@
 
 namespace unikent\KAR;
 
+use academicpuma\citeproc\CiteProc;
+use academicpuma\citeproc\CSLUtils;
 /**
  * A publiction, as KAR sees them.
  */
 class Publication
 {
+
+    protected static $CITATION_FORMATS = array(
+        'APA' => array('csl'=>'apa', 'parser'=> null),
+        'HARVARD' => array('csl'=>'harvard-university-of-kent', 'parser'=> null),
+        'IEEE' => array('csl'=>'ieee-with-url', 'parser'=> null),
+        'CHICAGO' => array('csl'=>'chicago-author-date', 'parser'=> null),
+    );
+
     /**
      * API.
      * 
@@ -188,7 +198,7 @@ class Publication
      * Returns the page range.
      */
     public function get_page_range() {
-        return $this->_data['page_range'];
+        return isset($this->_data['page_range']) ? $this->_data['page_range'] : '';
     }
 
     /**
@@ -270,4 +280,75 @@ class Publication
 
         return $str;
     }
+
+    public function as_citation($reference_style = 'APA'){
+        // Get parser for this citation format
+        $parser = $this->get_citeproc_parser($reference_style);
+
+        // Return formatted citation
+        return $parser->render($this->get_for_citeproc());
+    }
+
+
+
+    protected function get_for_citeproc(){
+        // Format data in order to build
+        $publication = new \STDClass();
+        
+        $publication->id = $this->get_id();
+        $publication->ISBN = $this->get_isbn();
+        $publication->URL = $this->get_url();
+        $publication->abstract = $this->get_abstract();
+        $publication->number = $this->get_number();
+        $publication->page = $this->get_page_range();
+        $publication->publisher = $this->get_publisher();
+        $publication->title = $this->get_title();
+        $publication->type = $this->get_type();
+        $publication->volume = $this->get_volume();
+
+        $publication->issued = (object) array("date-parts" => array(array($this->get_year())), "literal" => $this->get_year());
+  
+        $publication->author = array();
+        $publication->editor = array();
+
+        foreach($this->get_authors() as $author){
+            $publication->author[] = (object) array("given"=> $author->get_firstname(), "family"=>$author->get_lastname());
+        }
+
+        foreach($this->get_editors() as $author){
+            $publication->editor = (object) array("given"=> $author->get_firstname(), "family"=>$author->get_lastname());
+        }
+
+        // unused
+        $publication->DOI = '';
+        $publication->{"citation-label"} = '';
+        $publication->{"container-title"} = '';
+        $publication->documents = array();
+        $publication->edition = '';
+        $publication->{"event-place"} = '';
+        $publication->issue = '';
+        
+        $publication->note = '';
+        $publication->{"publisher-place"} = '';
+
+        return $publication;
+    }
+
+    protected function get_citeproc_parser($format){
+        $format = strtoupper($format);
+
+        // Ensure format is valid, else fall back to APA
+        if(!isset(static::$CITATION_FORMATS[$format])) $format = 'APA';
+
+        // if we have already loaded the parser, reuse it.
+        if(static::$CITATION_FORMATS[$format]['parser'] !== null) return static::$CITATION_FORMATS[$format]['parser'];
+
+        // Get path the csl file, load it & create a CiteProc instance to parse this type of references
+        $cslFilename = $this->_api->get_reference_csl_path().static::$CITATION_FORMATS[$format]['csl'].".csl";
+        $csl = file_get_contents($cslFilename);
+
+        return static::$CITATION_FORMATS[$format]['parser'] = new CiteProc($csl, 'en-GB');
+    }
+
+
 }

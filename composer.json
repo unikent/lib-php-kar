@@ -12,7 +12,8 @@
       "role": "lead"
    }],
    "require": {
-      "php": ">=5.3"
+      "php": ">=5.3",
+      "academicpuma/citeproc-php": "dev-default"
    },
    "autoload": {
       "psr-4": {

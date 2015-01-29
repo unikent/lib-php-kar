@@ -8,6 +8,8 @@
 
 namespace unikent\KAR;
 
+require_once(dirname(__FILE__).'/../vendor/autoload.php');
+
 /**
  * KAR API.
  * 
@@ -49,14 +51,26 @@ class API
      */
     private $_cache;
 
+
+    /**
+     * Path to referencing format .csl files
+     * 
+     * @internal
+     * @var string
+     */
+    private $_reference_csl_path;
+
     /**
      * Constructor.
      *
      * @param string $url Which KAR installation do you want? (just say null)
+     * @param string path Path to Reference csl files. null = disabled
      */
-    public function __construct($url = null) {
+    public function __construct($url = null, $reference_csl_path = null) {
         $this->set_url($url);
         $this->set_timeout(0);
+
+        $this->_reference_csl_path = $reference_csl_path;
     }
 
     /**
@@ -77,6 +91,13 @@ class API
      */
     public function get_url() {
         return $this->_url;
+    }
+
+     /**
+     * Returns the Path to csl files.
+     */
+    public function get_reference_csl_path() {
+        return $this->_reference_csl_path;
     }
 
     /**
@@ -165,6 +186,7 @@ class API
         curl_setopt($ch, CURLOPT_HEADER,         false);
         curl_setopt($ch, CURLOPT_HTTP_VERSION,   CURL_HTTP_VERSION_1_1);
         curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain'));
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
         if ($this->_timeout > 0) {
             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->_timeout);
