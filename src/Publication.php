@@ -281,7 +281,14 @@ class Publication
         return $str;
     }
 
+    /**
+     * Return formatted citation in given reference style
+     */
     public function as_citation($reference_style = 'APA'){
+
+        // If formatter is not configured - empty string
+        if($this->_api->get_reference_csl_path() == null) return '';
+
         // Get parser for this citation format
         $parser = $this->get_citeproc_parser($reference_style);
 
@@ -289,12 +296,15 @@ class Publication
         return $parser->render($this->get_for_citeproc());
     }
 
-
-
+    /**
+     * Format for CiteProc
+     * @internal
+     */
     protected function get_for_citeproc(){
         // Format data in order to build
         $publication = new \STDClass();
         
+        // Add basic params to pub object
         $publication->id = $this->get_id();
         $publication->ISBN = $this->get_isbn();
         $publication->URL = $this->get_url();
@@ -305,21 +315,20 @@ class Publication
         $publication->title = $this->get_title();
         $publication->type = $this->get_type();
         $publication->volume = $this->get_volume();
-
         $publication->issued = (object) array("date-parts" => array(array($this->get_year())), "literal" => $this->get_year());
   
+        // Convert author & editor fields
         $publication->author = array();
         $publication->editor = array();
 
         foreach($this->get_authors() as $author){
             $publication->author[] = (object) array("given"=> $author->get_firstname(), "family"=>$author->get_lastname());
         }
-
         foreach($this->get_editors() as $author){
-            $publication->editor = (object) array("given"=> $author->get_firstname(), "family"=>$author->get_lastname());
+            $publication->editor[] = (object) array("given"=> $author->get_firstname(), "family"=>$author->get_lastname());
         }
 
-        // unused
+        // Currently unused fields - left blank.
         $publication->DOI = '';
         $publication->{"citation-label"} = '';
         $publication->{"container-title"} = '';
@@ -327,13 +336,18 @@ class Publication
         $publication->edition = '';
         $publication->{"event-place"} = '';
         $publication->issue = '';
-        
         $publication->note = '';
         $publication->{"publisher-place"} = '';
 
         return $publication;
     }
 
+    /**
+     * Format for CiteProc
+     * @internal
+     * @param string $format - reference format APA/IEEE etc
+     * @return object $parser - Parser for given reference format
+     */
     protected function get_citeproc_parser($format){
         $format = strtoupper($format);
 
@@ -347,7 +361,7 @@ class Publication
         $cslFilename = $this->_api->get_reference_csl_path().static::$CITATION_FORMATS[$format]['csl'].".csl";
         $csl = file_get_contents($cslFilename);
 
-        return static::$CITATION_FORMATS[$format]['parser'] = new CiteProc($csl, 'en-GB');
+        return static::$CITATION_FORMATS[$format]['parser'] = new CiteProc($csl);
     }
 
 
