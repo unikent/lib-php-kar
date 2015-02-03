@@ -198,7 +198,7 @@ class Publication
      * Returns the page range.
      */
     public function get_page_range() {
-        return isset($this->_data['page_range']) ? $this->_data['page_range'] : '';
+        return $this->_data['pagerange'];
     }
 
     /**
@@ -234,6 +234,13 @@ class Publication
      */
     public function get_type() {
         return $this->_data['type'];
+    }
+
+    /**
+     * Returns the publication location.
+     */
+    public function get_location() {
+        return $this->_data['location'];
     }
 
     /**
@@ -363,6 +370,4 @@ class Publication
 
         return static::$CITATION_FORMATS[$format]['parser'] = new CiteProc($csl);
     }
-
-
 }
