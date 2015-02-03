@@ -117,11 +117,13 @@ class API
         $json = $this->curl($this->_url . "/cgi/api/search?q=" . urlencode($email) ."&limit=" . urlencode($limit));
         $objects = json_decode($json);
 
-        foreach ($objects as $k => $v) {
-            $object = Publication::create_from_api($this, $v);
-            $objects[$k] = $object;
+        if(is_array($objects)){
+            foreach ($objects as $k => $v) {
+                $object = Publication::create_from_api($this, $v);
+                $objects[$k] = $object;
+            }
         }
-
+        
         return $objects;
     }
 
