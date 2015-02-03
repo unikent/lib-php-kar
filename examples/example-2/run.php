@@ -6,18 +6,17 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once(dirname(__FILE__).'/../../vendor/autoload.php');
+require_once(dirname(__FILE__).'/../vendor/autoload.php');
 
-$reference_styles_path = dirname(__FILE__).'/../../vendor/academicpuma/citeproc-php/tests/styles/';
-
-$api = new \unikent\KAR\API('https://kar.kent.ac.uk', $reference_styles_path);
+$api = new \unikent\KAR\API();
 
 $documents = $api->search_author($_GET['author']);
 
 foreach ($documents as $document) {
     echo "--------------------------------- <br/>";
 
-    foreach(array('APA','Harvard','IEEE','CHICAGO') as $format){
-    	echo '<strong>'.$format.'</strong><br/>'.$document->as_citation($format);
+    $formats = array('apa', 'harvard-university-of-kent', 'ieee-with-url', 'chicago-author-date');
+    foreach ($formats as $format) {
+    	echo '<strong>' . $format . '</strong><br/>' . $document->as_citation($format);
     }
 }

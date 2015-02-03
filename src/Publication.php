@@ -503,9 +503,9 @@ class Publication
         static $parsers = array();
 
         if (!isset($parsers[$csl])) {
-            $csl = preg_replace("([^a-z0-9\-])", '', $file);
+            $safecsl = preg_replace("([^a-z0-9\-])", '', $csl);
 
-            $filename = dirname(__FILE__) . "/csl/" . $csl . ".csl";
+            $filename = dirname(__FILE__) . "/csl/" . $safecsl . ".csl";
             if (!file_exists($filename)) {
                 throw new \Exception("Invalid CSL: " . $csl);
             }
