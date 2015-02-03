@@ -13,7 +13,7 @@
    }],
    "require": {
       "php": ">=5.3",
-      "academicpuma/citeproc-php": "dev-default"
+      "academicpuma/citeproc-php": "1.0.0-beta"
    },
    "autoload": {
       "psr-4": {
