@@ -227,6 +227,13 @@ class Publication
     }
 
     /**
+     * Returns the publication location.
+     */
+    public function get_location() {
+        return $this->_data['location'];
+    }
+
+    /**
      * Returns the publication's document's URL.
      */
     public function get_file_url() {
