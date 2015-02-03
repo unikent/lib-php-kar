@@ -98,11 +98,15 @@ class API
         $json = $this->curl($this->_url . "/cgi/api/search?q=" . urlencode($email) ."&limit=" . urlencode($limit));
         $objects = json_decode($json);
 
+        if (!is_array($objects)) {
+            return null;
+        }
+
         foreach ($objects as $k => $v) {
             $object = Publication::create_from_api($this, $v);
             $objects[$k] = $object;
         }
-
+        
         return $objects;
     }
 
@@ -165,6 +169,7 @@ class API
         curl_setopt($ch, CURLOPT_HEADER,         false);
         curl_setopt($ch, CURLOPT_HTTP_VERSION,   CURL_HTTP_VERSION_1_1);
         curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain'));
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
         if ($this->_timeout > 0) {
             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT_MS, $this->_timeout);

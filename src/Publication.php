@@ -8,6 +8,8 @@
 
 namespace unikent\KAR;
 
+use \academicpuma\citeproc\CiteProc;
+use \academicpuma\citeproc\CSLUtils;
 /**
  * A publiction, as KAR sees them.
  */
@@ -416,5 +418,102 @@ class Publication
         $str .= "See " . $this->get_url() . "\n";
 
         return $str;
+    }
+
+    /**
+     * Return formatted citation in given reference style.
+     */
+    public function as_citation($csl = 'apa') {
+        // Get parser for this citation format.
+        $parser = $this->get_citeproc_parser($csl);
+
+        // Return formatted citation.
+        return $parser->render($this->get_for_citeproc());
+    }
+
+    /**
+     * Format for CiteProc.
+     * 
+     * @internal
+     */
+    protected function get_for_citeproc() {
+        // Format data in order to build
+        $publication = new \stdClass();
+        
+        // Add basic params to pub object
+        $publication->id = $this->get_id();
+        $publication->ISBN = $this->get_isbn();
+        $publication->URL = $this->get_url();
+        $publication->abstract = $this->get_abstract();
+        $publication->number = $this->get_number();
+        $publication->page = $this->get_page_range();
+        $publication->publisher = $this->get_publisher();
+        $publication->title = $this->get_title();
+        $publication->type = $this->get_type();
+        $publication->volume = $this->get_volume();
+        $publication->issued = (object) array(
+            "date-parts" => array(array($this->get_year())),
+            "literal" => $this->get_year()
+        );
+  
+        // Convert author & editor fields
+        $publication->author = array();
+        $publication->editor = array();
+
+        foreach ($this->get_authors() as $author) {
+            $record = array(
+                "given" => $author->get_firstname(),
+                "family" => $author->get_lastname()
+            );
+
+            $publication->author[] = (object)$record;
+        }
+
+        foreach ($this->get_editors() as $editor) {
+            $record = array(
+                "given" => $editor->get_firstname(),
+                "family" => $editor->get_lastname()
+            );
+
+            $publication->editor[] = (object)$record;
+        }
+
+        // Currently unused fields - left blank.
+        $publication->DOI = '';
+        $publication->{"citation-label"} = '';
+        $publication->{"container-title"} = '';
+        $publication->documents = array();
+        $publication->edition = '';
+        $publication->{"event-place"} = '';
+        $publication->issue = '';
+        $publication->note = '';
+        $publication->{"publisher-place"} = '';
+
+        return $publication;
+    }
+
+    /**
+     * Format for CiteProc
+     * 
+     * @internal
+     * @param string $csl - reference format csl APA/IEEE etc
+     * @return object $parser - Parser for given reference format
+     */
+    protected function get_citeproc_parser($csl) {
+        static $parsers = array();
+
+        if (!isset($parsers[$csl])) {
+            $safecsl = preg_replace("([^a-z0-9\-])", '', $csl);
+
+            $filename = dirname(__FILE__) . "/csls/" . $safecsl . ".csl";
+            if (!file_exists($filename)) {
+                throw new \Exception("Invalid CSL: " . $csl);
+            }
+
+            $csl = file_get_contents($filename);
+            $parsers[$csl] = new CiteProc($csl);
+        }
+
+        return $parsers[$csl];
     }
 }
