@@ -15,26 +15,6 @@ use \academicpuma\citeproc\CSLUtils;
  */
 class Publication
 {
-
-    protected static $CITATION_FORMATS = array(
-        'APA' => array(
-            'csl' => 'apa',
-            'parser' => null
-        ),
-        'HARVARD' => array(
-            'csl' => 'harvard-university-of-kent',
-            'parser' => null
-        ),
-        'IEEE' => array(
-            'csl' => 'ieee-with-url',
-            'parser' => null
-        ),
-        'CHICAGO' => array(
-            'csl' => 'chicago-author-date',
-            'parser' => null
-        )
-    );
-
     /**
      * API.
      * 
@@ -443,14 +423,9 @@ class Publication
     /**
      * Return formatted citation in given reference style.
      */
-    public function as_citation($reference_style = 'APA') {
-        // If formatter is not configured - empty string.
-        if ($this->_api->get_reference_csl_path() == null) {
-            return '';
-        }
-
+    public function as_citation($csl = 'apa') {
         // Get parser for this citation format.
-        $parser = $this->get_citeproc_parser($reference_style);
+        $parser = $this->get_citeproc_parser($csl);
 
         // Return formatted citation.
         return $parser->render($this->get_for_citeproc());
@@ -476,7 +451,10 @@ class Publication
         $publication->title = $this->get_title();
         $publication->type = $this->get_type();
         $publication->volume = $this->get_volume();
-        $publication->issued = (object) array("date-parts" => array(array($this->get_year())), "literal" => $this->get_year());
+        $publication->issued = (object) array(
+            "date-parts" => array(array($this->get_year())),
+            "literal" => $this->get_year()
+        );
   
         // Convert author & editor fields
         $publication->author = array();
@@ -518,26 +496,24 @@ class Publication
      * Format for CiteProc
      * 
      * @internal
-     * @param string $format - reference format APA/IEEE etc
+     * @param string $csl - reference format csl APA/IEEE etc
      * @return object $parser - Parser for given reference format
      */
-    protected function get_citeproc_parser($format) {
-        $format = strtoupper($format);
+    protected function get_citeproc_parser($csl) {
+        static $parsers = array();
 
-        // Ensure format is valid, else fall back to APA.
-        if (!isset(static::$CITATION_FORMATS[$format])) {
-            $format = 'APA';
+        if (!isset($parsers[$csl])) {
+            $csl = preg_replace("([^a-z0-9\-])", '', $file);
+
+            $filename = dirname(__FILE__) . "/csl/" . $csl . ".csl";
+            if (!file_exists($filename)) {
+                throw new \Exception("Invalid CSL: " . $csl);
+            }
+
+            $csl = file_get_contents($filename);
+            $parsers[$csl] = new CiteProc($csl);
         }
 
-        // If we have already loaded the parser, reuse it.
-        if (static::$CITATION_FORMATS[$format]['parser'] !== null) {
-            return static::$CITATION_FORMATS[$format]['parser'];
-        }
-
-        // Get path the csl file, load it & create a CiteProc instance to parse this type of references.
-        $cslfilename = $this->_api->get_reference_csl_path() . static::$CITATION_FORMATS[$format]['csl'] . ".csl";
-        $csl = file_get_contents($cslfilename);
-
-        return static::$CITATION_FORMATS[$format]['parser'] = new CiteProc($csl);
+        return $parsers[$csl];
     }
 }

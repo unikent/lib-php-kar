@@ -49,26 +49,14 @@ class API
      */
     private $_cache;
 
-
-    /**
-     * Path to referencing format .csl files
-     * 
-     * @internal
-     * @var string
-     */
-    private $_reference_csl_path;
-
     /**
      * Constructor.
      *
      * @param string $url Which KAR installation do you want? (just say null)
-     * @param string path Path to Reference csl files. null = disabled
      */
-    public function __construct($url = null, $reference_csl_path = null) {
+    public function __construct($url = null) {
         $this->set_url($url);
         $this->set_timeout(0);
-
-        $this->_reference_csl_path = $reference_csl_path;
     }
 
     /**
@@ -89,13 +77,6 @@ class API
      */
     public function get_url() {
         return $this->_url;
-    }
-
-     /**
-     * Returns the Path to csl files.
-     */
-    public function get_reference_csl_path() {
-        return $this->_reference_csl_path;
     }
 
     /**
