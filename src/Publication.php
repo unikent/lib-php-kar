@@ -376,9 +376,9 @@ class Publication
     }
 
     /**
-     * Returns the publication's document's URL.
+     * Returns the publication's document's file name.
      */
-    public function get_file_url() {
+    public function get_filename() {
         $fileinfo = $this->_data['fileinfo'];
         if (strpos($fileinfo, ';') === false) {
             return "";
@@ -387,19 +387,26 @@ class Publication
         $parts = explode(';', $fileinfo);
         $filename = array_pop($parts);
 
-        return $this->_api->get_url() . "/" . $filename;
+        return $filename;
+    }
+
+    /**
+     * Returns the publication's document's URL.
+     */
+    public function get_file_url() {
+        return $this->_api->get_url() . "/" . $this->get_filename();
     }
 
     /**
      * Returns the publication's document's Type.
      */
     public function get_file_type() {
-        $url = $this->get_file_url();
-        if (strpos($url, '.') === false) {
+        $filename = $this->get_filename();
+        if (strpos($filename, '.') === false) {
             return "";
         }
 
-        return substr($url, strrpos($url, '.') + 1);
+        return substr($filename, strrpos($filename, '.') + 1);
     }
 
     /**
