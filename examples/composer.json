@@ -1,6 +1,6 @@
 {
    "require": {
-     "unikent/lib-php-kar": "dev-feature/reference-formatter-alt"
+     "unikent/lib-php-kar": "dev-master"
    },
    "minimum-stability": "dev"
 }
