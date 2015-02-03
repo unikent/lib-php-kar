@@ -167,8 +167,8 @@ class API
         curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain'));
 
         if ($this->_timeout > 0) {
-            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->_timeout);
-            curl_setopt($ch, CURLOPT_TIMEOUT, $this->_timeout);
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT_MS, $this->_timeout);
+            curl_setopt($ch, CURLOPT_TIMEOUT_MS, $this->_timeout);
         }
 
         $result = curl_exec($ch);
