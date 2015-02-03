@@ -403,10 +403,30 @@ class Publication
     public function get_file_type() {
         $filename = $this->get_filename();
         if (strpos($filename, '.') === false) {
+            // Try and guess based on fileinfo.
+            $fileinfo = $this->_data['fileinfo'];
+
+            if (strpos($fileinfo, 'application_pdf') !== false) {
+                return "pdf";
+            }
+
+            if (strpos($fileinfo, 'application_msword') !== false) {
+                return "docx";
+            }
+
+            if (strpos($fileinfo, 'application_postscript') !== false) {
+                return "ps";
+            }
+
+            if (strpos($fileinfo, 'ms-powerpoint') !== false) {
+                return "pptx";
+            }
+
             return "";
         }
 
-        return substr($filename, strrpos($filename, '.') + 1);
+        $filetype = substr($filename, strrpos($filename, '.') + 1);
+        return strtolower($filetype);
     }
 
     /**
