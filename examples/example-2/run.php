@@ -7,9 +7,6 @@
  */
 
 require_once(dirname(__FILE__).'/../../vendor/autoload.php');
-require_once(dirname(__FILE__) . "/../../src/API.php");
-require_once(dirname(__FILE__) . "/../../src/Person.php");
-require_once(dirname(__FILE__) . "/../../src/Publication.php");
 
 $reference_styles_path = dirname(__FILE__).'/../../vendor/academicpuma/citeproc-php/tests/styles/';
 

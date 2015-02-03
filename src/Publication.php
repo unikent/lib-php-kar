@@ -8,8 +8,8 @@
 
 namespace unikent\KAR;
 
-use academicpuma\citeproc\CiteProc;
-use academicpuma\citeproc\CSLUtils;
+use \academicpuma\citeproc\CiteProc;
+use \academicpuma\citeproc\CSLUtils;
 /**
  * A publiction, as KAR sees them.
  */
@@ -17,10 +17,22 @@ class Publication
 {
 
     protected static $CITATION_FORMATS = array(
-        'APA' => array('csl'=>'apa', 'parser'=> null),
-        'HARVARD' => array('csl'=>'harvard-university-of-kent', 'parser'=> null),
-        'IEEE' => array('csl'=>'ieee-with-url', 'parser'=> null),
-        'CHICAGO' => array('csl'=>'chicago-author-date', 'parser'=> null),
+        'APA' => array(
+            'csl' => 'apa',
+            'parser' => null
+        ),
+        'HARVARD' => array(
+            'csl' => 'harvard-university-of-kent',
+            'parser' => null
+        ),
+        'IEEE' => array(
+            'csl' => 'ieee-with-url',
+            'parser' => null
+        ),
+        'CHICAGO' => array(
+            'csl' => 'chicago-author-date',
+            'parser' => null
+        )
     );
 
     /**
@@ -429,27 +441,29 @@ class Publication
     }
 
     /**
-     * Return formatted citation in given reference style
+     * Return formatted citation in given reference style.
      */
-    public function as_citation($reference_style = 'APA'){
+    public function as_citation($reference_style = 'APA') {
+        // If formatter is not configured - empty string.
+        if ($this->_api->get_reference_csl_path() == null) {
+            return '';
+        }
 
-        // If formatter is not configured - empty string
-        if($this->_api->get_reference_csl_path() == null) return '';
-
-        // Get parser for this citation format
+        // Get parser for this citation format.
         $parser = $this->get_citeproc_parser($reference_style);
 
-        // Return formatted citation
+        // Return formatted citation.
         return $parser->render($this->get_for_citeproc());
     }
 
     /**
-     * Format for CiteProc
+     * Format for CiteProc.
+     * 
      * @internal
      */
-    protected function get_for_citeproc(){
+    protected function get_for_citeproc() {
         // Format data in order to build
-        $publication = new \STDClass();
+        $publication = new \stdClass();
         
         // Add basic params to pub object
         $publication->id = $this->get_id();
@@ -468,11 +482,22 @@ class Publication
         $publication->author = array();
         $publication->editor = array();
 
-        foreach($this->get_authors() as $author){
-            $publication->author[] = (object) array("given"=> $author->get_firstname(), "family"=>$author->get_lastname());
+        foreach ($this->get_authors() as $author) {
+            $record = array(
+                "given" => $author->get_firstname(),
+                "family" => $author->get_lastname()
+            );
+
+            $publication->author[] = (object)$record;
         }
-        foreach($this->get_editors() as $author){
-            $publication->editor[] = (object) array("given"=> $author->get_firstname(), "family"=>$author->get_lastname());
+
+        foreach ($this->get_editors() as $editor) {
+            $record = array(
+                "given" => $editor->get_firstname(),
+                "family" => $editor->get_lastname()
+            );
+
+            $publication->editor[] = (object)$record;
         }
 
         // Currently unused fields - left blank.
@@ -491,22 +516,27 @@ class Publication
 
     /**
      * Format for CiteProc
+     * 
      * @internal
      * @param string $format - reference format APA/IEEE etc
      * @return object $parser - Parser for given reference format
      */
-    protected function get_citeproc_parser($format){
+    protected function get_citeproc_parser($format) {
         $format = strtoupper($format);
 
-        // Ensure format is valid, else fall back to APA
-        if(!isset(static::$CITATION_FORMATS[$format])) $format = 'APA';
+        // Ensure format is valid, else fall back to APA.
+        if (!isset(static::$CITATION_FORMATS[$format])) {
+            $format = 'APA';
+        }
 
-        // if we have already loaded the parser, reuse it.
-        if(static::$CITATION_FORMATS[$format]['parser'] !== null) return static::$CITATION_FORMATS[$format]['parser'];
+        // If we have already loaded the parser, reuse it.
+        if (static::$CITATION_FORMATS[$format]['parser'] !== null) {
+            return static::$CITATION_FORMATS[$format]['parser'];
+        }
 
-        // Get path the csl file, load it & create a CiteProc instance to parse this type of references
-        $cslFilename = $this->_api->get_reference_csl_path().static::$CITATION_FORMATS[$format]['csl'].".csl";
-        $csl = file_get_contents($cslFilename);
+        // Get path the csl file, load it & create a CiteProc instance to parse this type of references.
+        $cslfilename = $this->_api->get_reference_csl_path() . static::$CITATION_FORMATS[$format]['csl'] . ".csl";
+        $csl = file_get_contents($cslfilename);
 
         return static::$CITATION_FORMATS[$format]['parser'] = new CiteProc($csl);
     }
