@@ -244,6 +244,146 @@ class Publication
     }
 
     /**
+     * Returns the id number.
+     */
+    public function get_id_number() {
+        return $this->_data['id_number'];
+    }
+
+    /**
+     * Returns the book title.
+     */
+    public function get_book_title() {
+        return $this->_data['book_title'];
+    }
+
+    /**
+     * Returns the series.
+     */
+    public function get_series() {
+        return $this->_data['series'];
+    }
+
+    /**
+     * Returns the place of publication.
+     */
+    public function get_place_of_pub() {
+        return $this->_data['place_of_pub'];
+    }
+
+    /**
+     * Returns the pages.
+     */
+    public function get_pages() {
+        return $this->_data['pages'];
+    }
+
+    /**
+     * Returns the event title.
+     */
+    public function get_event_title() {
+        return $this->_data['event_title'];
+    }
+
+    /**
+     * Returns the event dates.
+     */
+    public function get_event_dates() {
+        return $this->_data['event_dates'];
+    }
+
+    /**
+     * Returns the event location.
+     */
+    public function get_event_location() {
+        return $this->_data['event_location'];
+    }
+
+    /**
+     * Returns the monograph type.
+     */
+    public function get_monograph_type() {
+        return $this->_data['monograph_type'];
+    }
+
+    /**
+     * Returns the output media.
+     */
+    public function get_output_media() {
+        return $this->_data['output_media'];
+    }
+
+    /**
+     * Returns the size.
+     */
+    public function get_size() {
+        return $this->_data['size'];
+    }
+
+    /**
+     * Returns the performance type.
+     */
+    public function get_performance_type() {
+        return $this->_data['performance_type'];
+    }
+
+    /**
+     * Returns the num pieces.
+     */
+    public function get_num_pieces() {
+        return $this->_data['num_pieces'];
+    }
+
+    /**
+     * Returns the manufacturer.
+     */
+    public function get_manufacturer() {
+        return $this->_data['manufacturer'];
+    }
+
+    /**
+     * Returns the thesis type.
+     */
+    public function get_thesis_type() {
+        return $this->_data['thesis_type'];
+    }
+
+    /**
+     * Is it published?
+     */
+    public function get_ispublished() {
+        return $this->_data['ispublished'];
+    }
+
+    /**
+     * Returns the full text status.
+     */
+    public function get_full_text_status() {
+        return $this->_data['full_text_status'];
+    }
+
+    /**
+     * Returns the institution.
+     */
+    public function get_institution() {
+        return $this->_data['institution'];
+    }
+
+    /**
+     * Returns the patent applicant.
+     */
+    public function get_patent_applicant() {
+        return $this->_data['patent_applicant'];
+    }
+
+    /**
+     * Returns the reviewed item.
+     */
+    public function get_reviewed_item() {
+        return $this->_data['reviewed_item'];
+    }
+
+    /**
      * Returns the publication's document's URL.
      */
     public function get_file_url() {
