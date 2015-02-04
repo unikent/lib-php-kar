@@ -127,17 +127,6 @@ class API
     }
 
     /**
-     * Returns the URL for an author.
-     *
-     * @deprecated It is preferred you use the get_url() method in Person
-     * @see \unikent\KAR\Person::get_url
-     * @param string $email The author's email.
-     */
-    public function get_author_url($email) {
-        return $this->_url . "/view/email/" . $this->encode_string($email) . ".html";
-    }
-
-    /**
      * Set a cache object.
      * This API expects it can call "set($key, $value)" and "get($key)" and wont try to do anything else.
      *
