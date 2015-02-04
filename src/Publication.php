@@ -504,8 +504,7 @@ class Publication
         $publication->publisher = $this->get_publisher();
         $publication->title = $this->get_title();
         
-
-        // $publication->URL = $this->get_url();
+        $publication->URL = $this->get_official_url();
 
         $publication->volume = $this->get_volume();
         $publication->issued = (object) array(
@@ -524,7 +523,6 @@ class Publication
         $publication->{"container-title"} = $this->get_book_title();
 
         $publication->{"number-of-pages"} = $this->get_pages();
-
 
         // Convert author & editor fields
         $publication->author = array();
