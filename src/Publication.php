@@ -485,7 +485,6 @@ class Publication
      * @internal
      */
     protected function get_for_citeproc() {
-
         // Format data in order to build
         $publication = new \stdClass();
         
@@ -558,71 +557,65 @@ class Publication
         return $publication;
     }
 
-     /**
-     * Get CiteProc Type
-     * Converts KAR type to CiteProc type. (roughly)
+    /**
+     * Converts KAR type to CiteProc type.
      * 
+     * @return array Mappings.
      */
     public function get_citeproc_type(){
-        $kar_type = $this->get_type();
+        $kartype = $this->get_type();
 
-        switch ($kar_type) {
-
-            // Unsure
+        switch ($kartype) {
+            // Unsure.
             case 'artefact':
+            case 'exhibition':
+            case 'software':
+            case 'scholarlyed':
                 return "article";
-            case 'exhibition': 
-                return "article"; 
             case 'audio':
                 return "speech";
-            case 'performance': 
+            case 'performance':
                 return "song";
-           case 'software': 
-                return "article"; 
-            case 'scholarlyed': 
-                return "article"; 
-            case 'monograph': 
+            case 'monograph':
                 return "thesis";
-            case 'design': 
-                return "figure"; 
+            case 'design':
+                return "figure";
 
-            // "Probably" right
+            // "Probably" right.
             case 'article':
                 return "article";
-            case 'book': 
-                return "book"; 
-            case 'book_section': 
-                return "chapter"; 
-            case 'composition': 
-                return "musical_score"; 
-            case 'conference_item': 
-                return "paper-conference"; 
-            case 'confidential_report': 
-                return "report"; 
-            case 'dataset': 
-                return "dataset"; 
-            case 'edbook': 
-                return "book"; 
-            case 'image': 
-                return "graphic"; 
-            case 'internet': 
-                return "webpage"; 
-            case 'patent': 
-                return "patent"; 
-            case 'research_report': 
-                return "report"; 
-            case 'review': 
-                return "review"; 
-            case 'thesis': 
-                return "thesis"; 
-            case 'video': 
-                return "motion_picture"; 
-            case 'other': 
-                return "article"; 
+            case 'book':
+            case 'edbook':
+                return "book";
+            case 'book_section';
+                return "chapter";
+            case 'composition':
+                return "musical_score";
+            case 'conference_item':
+                return "paper-conference";
+            case 'confidential_report':
+                return "report";
+            case 'dataset':
+                return "dataset";
+            case 'image':
+                return "graphic";
+            case 'internet':
+                return "webpage";
+            case 'patent':
+                return "patent";
+            case 'research_report':
+                return "report";
+            case 'review':
+                return "review";
+            case 'thesis':
+                return "thesis";
+            case 'video':
+                return "motion_picture";
 
-            // Article sounds default
+            // Return article as the default.
+            case 'other':
             default:
-                return  "article";
+                return "article";
         }
     }
 
