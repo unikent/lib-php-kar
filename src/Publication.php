@@ -159,6 +159,13 @@ class Publication
     }
 
     /**
+     * Returns the publication subtitle.
+     */
+    public function get_subtitle() {
+        return $this->_data['subtitle'];
+    }
+
+    /**
      * Returns the publication abstract.
      */
     public function get_abstract() {
@@ -373,6 +380,20 @@ class Publication
      */
     public function get_reviewed_item() {
         return $this->_data['reviewed_item'];
+    }
+
+    /**
+     * Returns the official url.
+     */
+    public function get_official_url() {
+        return $this->_data['official_url'];
+    }
+
+    /**
+     * Returns divisions this item belongs to.
+     */
+    public function get_divisions() {
+        return explode(":", $this->_data['divisions']);
     }
 
     /**
