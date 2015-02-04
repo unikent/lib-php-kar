@@ -32,36 +32,12 @@ class Publication
     private $_data;
 
     /**
-     * Authors.
+     * People.
      * 
      * @internal
      * @param array
      */
-    private $_authors;
-
-    /**
-     * Editors.
-     * 
-     * @internal
-     * @param array
-     */
-    private $_editors;
-
-    /**
-     * Reviewers.
-     * 
-     * @internal
-     * @param array
-     */
-    private $_reviewers;
-
-    /**
-     * Funders.
-     * 
-     * @internal
-     * @param array
-     */
-    private $_funders;
+    private $_people;
 
     /**
      * Constructor.
@@ -72,10 +48,7 @@ class Publication
     private function __construct($api) {
         $this->_api = $api;
         $this->_data = array();
-        $this->_authors = array();
-        $this->_editors = array();
-        $this->_reviewers = array();
-        $this->_funders = array();
+        $this->_people = null;
     }
 
     /**
@@ -96,52 +69,67 @@ class Publication
             $obj->_data[$k] = $v;
         }
 
-        foreach ($data->authors as $author) {
-            $obj->_authors[] = Person::create_from_api($api, $author);
-        }
-
-        foreach ($data->editors as $editor) {
-            $obj->_editors[] = Person::create_from_api($api, $editor);
-        }
-
-        foreach ($data->reviewers as $reviewer) {
-            $obj->_reviewers[] = Person::create_from_api($api, $reviewer);
-        }
-
-
-        foreach ($data->funders as $funder) {
-            $obj->_funders[] = $funder->name;
-        }
-
         return $obj;
+    }
+
+    /**
+     * Get all people associated with this publication.
+     */
+    private function build_people_cache() {
+        if (!empty($this->_people)) {
+            return;
+        }
+
+        $eprintid = $this->get_id();
+        if (empty($eprintid)) {
+            return;
+        }
+
+        $this->_people = array(
+            'creator' => array(),
+            'editor' => array(),
+            'reviewer' => array(),
+            'funder' => array()
+        );
+
+        // Grab people from the API.
+        $people = $this->_api->get_people($eprintid);
+        foreach ($people as $person) {
+            $type = $person->get_type();
+            $this->_people[$type] = $person;
+        }
     }
 
     /**
      * Get all authors.
      */
     public function get_authors() {
-        return $this->_authors;
+        $this->build_people_cache();
+        return $this->_people['creator'];
     }
 
     /**
      * Get all editors.
      */
     public function get_editors() {
-        return $this->_editors;
+        $this->build_people_cache();
+        return $this->_people['editor'];
     }
 
     /**
      * Get all reviewers.
      */
     public function get_reviewers() {
-        return $this->_reviewers;
+        $this->build_people_cache();
+        return $this->_people['reviewer'];
     }
 
     /**
      * Get all funders.
      */
     public function get_funders() {
-        return $this->_funders;
+        $this->build_people_cache();
+        return $this->_people['funder'];
     }
 
     /**

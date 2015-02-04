@@ -146,6 +146,52 @@ class API
     }
 
     /**
+     * Return all people associated with a publication.
+     *
+     * @internal
+     * @param string $eprintid The eprint id.
+     */
+    public function get_people($eprintid, $map) {
+        $eprintid = urlencode($eprintid);
+        $json = $this->curl($this->_url . "/cgi/api/get_people?eprintid=$eprintid");
+        $objects = json_decode($json);
+
+        if (!is_array($objects)) {
+            return null;
+        }
+
+        foreach ($objects as $k => $v) {
+            $object = Person::create_from_api($this, $v);
+            $objects[$k] = $object;
+        }
+        
+        return $objects;
+    }
+
+    /**
+     * Return all people associated with a publication.
+     * 
+     * @internal
+     * @param string $eprintid The eprint id.
+     */
+    public function get_divisions($eprintid) {
+        $eprintid = urlencode($eprintid);
+        $json = $this->curl($this->_url . "/cgi/api/get_divisions?eprintid=$eprintid");
+        $objects = json_decode($json);
+
+        if (!is_array($objects)) {
+            return null;
+        }
+
+        foreach ($objects as $k => $v) {
+            $object = Division::create_from_api($this, $v);
+            $objects[$k] = $object;
+        }
+        
+        return $objects;
+    }
+
+    /**
      * Encode a string in EPrints URL format.
      *
      * @internal
