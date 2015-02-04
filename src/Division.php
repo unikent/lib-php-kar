@@ -158,6 +158,16 @@ class Division
     }
 
     /**
+     * Return my URL.
+     */
+    public function get_url() {
+        $url = $this->_api->get_url() . "/view/divisions/";
+        $id = $this->get_id();
+        $url .= $this->_api->encode_string($id) . '.html';
+        return $url;
+    }
+
+    /**
      * Return a textual representation of myself and my parents.
      */
     public function get_full_path() {
@@ -202,5 +212,12 @@ class Division
         }
 
         return $this->_child->get_last();
+    }
+
+    /**
+     * To String.
+     */
+    public function __toString() {
+        return $this->get_full_path();
     }
 }

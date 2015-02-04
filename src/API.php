@@ -196,6 +196,7 @@ class API
         $string = urlencode($string);
         $string = str_replace('%', '=', $string);
         $string = str_replace('.', '=2E', $string);
+        $string = str_replace('/', '=2F', $string);
 
         return $string;
     }

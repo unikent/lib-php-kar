@@ -479,7 +479,7 @@ class Publication
         if (!empty($authors)) {
             $str .= "By " . implode(', ', $authors) . "\n";
         }
-        $str .= "See " . $this->get_url() . "\n";
+        $str .= "See " . $this->get_url();
 
         return $str;
     }
