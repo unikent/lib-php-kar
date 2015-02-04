@@ -502,7 +502,7 @@ class Publication
         $publication->page = $this->get_page_range();
 
         $publication->publisher = $this->get_publisher();
-        $publication->{"publisher-place"} = $this>get_place_of_pub();
+        $publication->{"publisher-place"} = $this->get_place_of_pub();
 
         $publication->title = $this->get_title();
         $publication->URL = $this->get_official_url();
