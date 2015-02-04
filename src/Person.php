@@ -46,6 +46,14 @@ class Person
     private $_email;
 
     /**
+     * Person Type.
+     * 
+     * @internal
+     * @param string
+     */
+    private $_type;
+
+    /**
      * Publications (if grabbed).
      * 
      * @internal
@@ -75,6 +83,7 @@ class Person
         $person->set_firstname($data->given_name);
         $person->set_lastname($data->family_name);
         $person->set_email($data->email);
+        $person->set_type($data->type);
 
         return $person;
     }
@@ -93,7 +102,7 @@ class Person
      * Set the person's lastname.
      * 
      * @internal
-     * @param string $firstname A lastname.
+     * @param string $lastname A lastname.
      */
     public function set_lastname($lastname) {
         $this->_lastname = $lastname;
@@ -103,11 +112,21 @@ class Person
      * Set the person's email.
      * 
      * @internal
-     * @param string $firstname A email.
+     * @param string $email A email.
      */
     public function set_email($email) {
         $this->_email = $email;
         $this->_publications = null;
+    }
+
+    /**
+     * Set the person's type.
+     * 
+     * @internal
+     * @param string $type A type.
+     */
+    public function set_type($type) {
+        $this->_type = $type;
     }
 
     /**
@@ -129,6 +148,15 @@ class Person
      */
     public function get_email() {
         return $this->_email;
+    }
+
+    /**
+     * Returns the person's type.
+     * 
+     * @internal
+     */
+    public function get_type() {
+        return $this->_type;
     }
 
     /**

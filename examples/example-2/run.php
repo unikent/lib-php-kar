@@ -10,7 +10,7 @@ require_once(dirname(__FILE__).'/../vendor/autoload.php');
 
 $api = new \unikent\KAR\API();
 
-$documents = $api->search_author($_GET['author']);
+$documents = $api->search_by_email($_GET['author']);
 
 foreach ($documents as $document) {
     echo "--------------------------------- <br/>";

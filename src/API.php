@@ -89,15 +89,15 @@ class API
     }
 
     /**
-     * Search KAR for a given author's emails.
+     * Search KAR for a given x.
      *
-     * @param string $email The author's email.
+     * @param string $url The URL to grab.
      * @param int $limit The maximum number of results to return.
      * @param int $offset The offset of results to return.
      */
-    public function search_author($email, $limit = 1000, $offset = 0) {
-        $query = "?q=" . urlencode($email) . "&limit=" . urlencode($limit) . "&offset=" . urlencode($offset);
-        $json = $this->curl($this->_url . "/cgi/api/search" . $query);
+    private function search_by_url($url, $limit = 1000, $offset = 0) {
+        $query = "&limit=" . urlencode($limit) . "&offset=" . urlencode($offset);
+        $json = $this->curl($this->_url . $url . $query);
         $objects = json_decode($json);
 
         if (!is_array($objects)) {
@@ -113,6 +113,80 @@ class API
     }
 
     /**
+     * Search KAR for a given eprintid.
+     *
+     * @param string $eprintid The eprint id.
+     * @param int $limit The maximum number of results to return.
+     * @param int $offset The offset of results to return.
+     */
+    public function search_by_id($eprintid, $limit = 1000, $offset = 0) {
+        return $this->search_by_url("/cgi/api/search_by_id" . "?q=" . urlencode($eprintid), $limit, $offset);
+    }
+
+    /**
+     * Search KAR for a given division.
+     *
+     * @param string $division The division id.
+     * @param int $limit The maximum number of results to return.
+     * @param int $offset The offset of results to return.
+     */
+    public function search_by_division($division, $limit = 1000, $offset = 0) {
+        return $this->search_by_url("/cgi/api/search_by_division" . "?q=" . urlencode($division), $limit, $offset);
+    }
+
+    /**
+     * Search KAR for a given author's email.
+     *
+     * @param string $email The author's email.
+     * @param int $limit The maximum number of results to return.
+     * @param int $offset The offset of results to return.
+     */
+    public function search_by_email($email, $limit = 1000, $offset = 0) {
+        return $this->search_by_url("/cgi/api/search_by_email" . "?q=" . urlencode($email), $limit, $offset);
+    }
+
+    /**
+     * Return all people associated with a publication.
+     *
+     * @internal
+     * @param string $eprintid The eprint id.
+     */
+    public function get_people($eprintid) {
+        $eprintid = urlencode($eprintid);
+        $json = $this->curl($this->_url . "/cgi/api/get_people?eprintid=$eprintid");
+        $objects = json_decode($json);
+
+        if (!is_array($objects)) {
+            return null;
+        }
+
+        foreach ($objects as $k => $v) {
+            $object = Person::create_from_api($this, $v);
+            $objects[$k] = $object;
+        }
+        
+        return $objects;
+    }
+
+    /**
+     * Return all people associated with a publication.
+     * 
+     * @internal
+     * @param string $eprintid The eprint id.
+     */
+    public function get_divisions($eprintid) {
+        $eprintid = urlencode($eprintid);
+        $json = $this->curl($this->_url . "/cgi/api/get_divisions?eprintid=$eprintid");
+        $objects = json_decode($json);
+
+        if (!is_array($objects)) {
+            return null;
+        }
+
+        return Division::create_paths_from_api($this, $objects);
+    }
+
+    /**
      * Encode a string in EPrints URL format.
      *
      * @internal
@@ -122,19 +196,9 @@ class API
         $string = urlencode($string);
         $string = str_replace('%', '=', $string);
         $string = str_replace('.', '=2E', $string);
+        $string = str_replace('/', '=2F', $string);
 
         return $string;
-    }
-
-    /**
-     * Returns the URL for an author.
-     *
-     * @deprecated It is preferred you use the get_url() method in Person
-     * @see \unikent\KAR\Person::get_url
-     * @param string $email The author's email.
-     */
-    public function get_author_url($email) {
-        return $this->_url . "/view/email/" . $this->encode_string($email) . ".html";
     }
 
     /**

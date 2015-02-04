@@ -8,8 +8,6 @@
 
 namespace unikent\KAR;
 
-use \academicpuma\citeproc\CiteProc;
-
 /**
  * A publiction, as KAR sees them.
  */
@@ -32,36 +30,20 @@ class Publication
     private $_data;
 
     /**
-     * Authors.
+     * People.
      * 
      * @internal
      * @param array
      */
-    private $_authors;
+    private $_people;
 
     /**
-     * Editors.
+     * Divisions.
      * 
      * @internal
      * @param array
      */
-    private $_editors;
-
-    /**
-     * Reviewers.
-     * 
-     * @internal
-     * @param array
-     */
-    private $_reviewers;
-
-    /**
-     * Funders.
-     * 
-     * @internal
-     * @param array
-     */
-    private $_funders;
+    private $_divisions;
 
     /**
      * Constructor.
@@ -72,10 +54,8 @@ class Publication
     private function __construct($api) {
         $this->_api = $api;
         $this->_data = array();
-        $this->_authors = array();
-        $this->_editors = array();
-        $this->_reviewers = array();
-        $this->_funders = array();
+        $this->_people = null;
+        $this->_divisions = null;
     }
 
     /**
@@ -96,52 +76,67 @@ class Publication
             $obj->_data[$k] = $v;
         }
 
-        foreach ($data->authors as $author) {
-            $obj->_authors[] = Person::create_from_api($api, $author);
-        }
-
-        foreach ($data->editors as $editor) {
-            $obj->_editors[] = Person::create_from_api($api, $editor);
-        }
-
-        foreach ($data->reviewers as $reviewer) {
-            $obj->_reviewers[] = Person::create_from_api($api, $reviewer);
-        }
-
-
-        foreach ($data->funders as $funder) {
-            $obj->_funders[] = $funder->name;
-        }
-
         return $obj;
+    }
+
+    /**
+     * Get all people associated with this publication.
+     */
+    private function build_people_cache() {
+        if ($this->_people !== null) {
+            return;
+        }
+
+        $eprintid = $this->get_id();
+        if (empty($eprintid)) {
+            return;
+        }
+
+        $this->_people = array(
+            'creator' => array(),
+            'editor' => array(),
+            'reviewer' => array(),
+            'funder' => array()
+        );
+
+        // Grab people from the API.
+        $people = $this->_api->get_people($eprintid);
+        foreach ($people as $person) {
+            $type = $person->get_type();
+            $this->_people[$type][] = $person;
+        }
     }
 
     /**
      * Get all authors.
      */
     public function get_authors() {
-        return $this->_authors;
+        $this->build_people_cache();
+        return $this->_people['creator'];
     }
 
     /**
      * Get all editors.
      */
     public function get_editors() {
-        return $this->_editors;
+        $this->build_people_cache();
+        return $this->_people['editor'];
     }
 
     /**
      * Get all reviewers.
      */
     public function get_reviewers() {
-        return $this->_reviewers;
+        $this->build_people_cache();
+        return $this->_people['reviewer'];
     }
 
     /**
      * Get all funders.
      */
     public function get_funders() {
-        return $this->_funders;
+        $this->build_people_cache();
+        return $this->_people['funder'];
     }
 
     /**
@@ -390,10 +385,28 @@ class Publication
     }
 
     /**
+     * Get all divisions associated with this publication.
+     */
+    private function build_division_cache() {
+        if ($this->_divisions !== null) {
+            return;
+        }
+
+        $eprintid = $this->get_id();
+        if (empty($eprintid)) {
+            return;
+        }
+
+        // Grab divisions from the API.
+        $this->_divisions = $this->_api->get_divisions($eprintid);
+    }
+
+    /**
      * Returns divisions this item belongs to.
      */
     public function get_divisions() {
-        return explode(":", $this->_data['divisions']);
+        $this->build_division_cache();
+        return $this->_divisions;
     }
 
     /**
@@ -462,8 +475,11 @@ class Publication
      */
     public function __toString() {
         $str = $this->get_title() . "\n";
-        $str .= "By " . implode(', ', $this->_authors) . "\n";
-        $str .= "See " . $this->get_url() . "\n";
+        $authors = $this->get_authors();
+        if (!empty($authors)) {
+            $str .= "By " . implode(', ', $authors) . "\n";
+        }
+        $str .= "See " . $this->get_url();
 
         return $str;
     }
@@ -637,7 +653,7 @@ class Publication
             }
 
             $csl = file_get_contents($filename);
-            $parsers[$csl] = new CiteProc($csl);
+            $parsers[$csl] = new \academicpuma\citeproc\CiteProc($csl);
         }
 
         return $parsers[$csl];
