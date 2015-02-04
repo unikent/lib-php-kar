@@ -93,6 +93,7 @@ class API
      *
      * @param string $email The author's email.
      * @param int $limit The maximum number of results to return.
+     * @param int $offset The offset of results to return.
      */
     public function search_author($email, $limit = 1000, $offset = 0) {
         $query = "?q=" . urlencode($email) . "&limit=" . urlencode($limit) . "&offset=" . urlencode($offset);
