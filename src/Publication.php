@@ -9,7 +9,7 @@
 namespace unikent\KAR;
 
 use \academicpuma\citeproc\CiteProc;
-use \academicpuma\citeproc\CSLUtils;
+
 /**
  * A publiction, as KAR sees them.
  */
@@ -464,25 +464,47 @@ class Publication
      * @internal
      */
     protected function get_for_citeproc() {
+
         // Format data in order to build
         $publication = new \stdClass();
         
         // Add basic params to pub object
         $publication->id = $this->get_id();
+        $publication->type =  $this->get_citeproc_type();
+
+        $publication->DOI = $this->get_id_number();
+        $publication->ISSN = $this->get_issn();
         $publication->ISBN = $this->get_isbn();
-        $publication->URL = $this->get_url();
+
+     
         $publication->abstract = $this->get_abstract();
         $publication->number = $this->get_number();
         $publication->page = $this->get_page_range();
         $publication->publisher = $this->get_publisher();
         $publication->title = $this->get_title();
-        $publication->type = $this->get_type();
+        
+
+        // $publication->URL = $this->get_url();
+
         $publication->volume = $this->get_volume();
         $publication->issued = (object) array(
             "date-parts" => array(array($this->get_year())),
             "literal" => $this->get_year()
         );
-  
+
+        $publication->event = $this->get_event_title();
+        $publication->{"event-date"} = $this->get_event_dates();
+        $publication->{"event-place"} = $this->get_event_location();
+
+        $publication->medium = $this->get_output_media();
+
+        $publication->performance_type = $this->get_performance_type();
+
+        $publication->{"container-title"} = $this->get_book_title();
+
+        $publication->{"number-of-pages"} = $this->get_pages();
+
+
         // Convert author & editor fields
         $publication->author = array();
         $publication->editor = array();
@@ -506,9 +528,8 @@ class Publication
         }
 
         // Currently unused fields - left blank.
-        $publication->DOI = '';
         $publication->{"citation-label"} = '';
-        $publication->{"container-title"} = '';
+       
         $publication->documents = array();
         $publication->edition = '';
         $publication->{"event-place"} = '';
@@ -517,6 +538,74 @@ class Publication
         $publication->{"publisher-place"} = '';
 
         return $publication;
+    }
+
+     /**
+     * Get CiteProc Type
+     * Converts KAR type to CiteProc type. (roughly)
+     * 
+     */
+    public function get_citeproc_type(){
+        $kar_type = $this->get_type();
+
+        switch ($kar_type) {
+
+            // Unsure
+            case 'artefact':
+                return "article";
+            case 'exhibition': 
+                return "article"; 
+            case 'audio':
+                return "speech";
+            case 'performance': 
+                return "song";
+           case 'software': 
+                return "article"; 
+            case 'scholarlyed': 
+                return "article"; 
+            case 'monograph': 
+                return "thesis";
+            case 'design': 
+                return "figure"; 
+
+            // "Probably" right
+            case 'article':
+                return "article";
+            case 'book': 
+                return "book"; 
+            case 'book_section': 
+                return "chapter"; 
+            case 'composition': 
+                return "musical_score"; 
+            case 'conference_item': 
+                return "paper-conference"; 
+            case 'confidential_report': 
+                return "report"; 
+            case 'dataset': 
+                return "dataset"; 
+            case 'edbook': 
+                return "book"; 
+            case 'image': 
+                return "graphic"; 
+            case 'internet': 
+                return "webpage"; 
+            case 'patent': 
+                return "patent"; 
+            case 'research_report': 
+                return "report"; 
+            case 'review': 
+                return "review"; 
+            case 'thesis': 
+                return "thesis"; 
+            case 'video': 
+                return "motion_picture"; 
+            case 'other': 
+                return "article"; 
+
+            // Article sounds default
+            default:
+                return  "article";
+        }
     }
 
     /**
