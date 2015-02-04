@@ -490,7 +490,7 @@ class Publication
         
         // Add basic params to pub object
         $publication->id = $this->get_id();
-        $publication->type =  $this->get_citeproc_type();
+        $publication->type = $this->get_citeproc_type();
 
         $publication->DOI = $this->get_id_number();
         $publication->ISSN = $this->get_issn();
@@ -552,7 +552,6 @@ class Publication
         $publication->edition = '';
         $publication->issue = '';
         $publication->note = '';
-        
 
         return $publication;
     }
@@ -562,7 +561,7 @@ class Publication
      * 
      * @return array Mappings.
      */
-    public function get_citeproc_type(){
+    public function get_citeproc_type() {
         $kartype = $this->get_type();
 
         switch ($kartype) {
