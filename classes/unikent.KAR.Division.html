@@ -144,28 +144,28 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1917330622"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-381226591"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-1917330622" class="accordion-body collapse in">
+            <div id="namespace-381226591" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-688521139"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-960785596"></a>
                                 <a href="../namespaces/unikent.html" style="margin-left: 30px; padding-left: 0">unikent</a>
             </div>
-            <div id="namespace-688521139" class="accordion-body collapse ">
+            <div id="namespace-960785596" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-908502909"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-666801076"></a>
                                 <a href="../namespaces/unikent.KAR.html" style="margin-left: 30px; padding-left: 0">KAR</a>
             </div>
-            <div id="namespace-908502909" class="accordion-body collapse ">
+            <div id="namespace-666801076" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -207,35 +207,11 @@
                                             </nav>
                     <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
 
-                    <h1><small>\unikent\KAR</small>API</h1>
-                    <p><em>KAR API.</em></p>
+                    <h1><small>\unikent\KAR</small>Division</h1>
+                    <p><em>A division, as KAR sees them.</em></p>
+                    <p>This is also a doubly linked list.</p>
                     
-                    
-                                                                        <h3>Examples</h3>
-                                                                            <h4>How to grab an author&#039;s documents from KAR.</h4>
-                            <pre class="pre-scrollable">&lt;?php
-/**
- * KAR API for is-dev applications.
- *
- * @copyright  2014 Skylar Kelty &lt;S.Kelty@kent.ac.uk&gt;
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-
-require_once(dirname(__FILE__).&#039;/../vendor/autoload.php&#039;);
-
-if (!isset($argv[1])) {
-    die(&quot;Usage: php run.php &lt;author email&gt;\n&quot;);
-}
-
-$api = new \unikent\KAR\API();
-
-$documents = $api-&gt;search_by_email($argv[1]);
-
-foreach ($documents as $document) {
-    echo &quot;---------------------------------\n&quot;;
-    echo $document . &quot;\n&quot;;
-}</pre>
-                                                                
+                                        
                     <section id="summary">
                         <h2>Summary</h2>
                         <section class="row-fluid heading">
@@ -251,21 +227,21 @@ foreach ($documents as $document) {
                         </section>
                         <section class="row-fluid public">
                             <section class="span4">
-                                                                    <a href="../classes/unikent.KAR.API.html#method___construct" class="">__construct()</a><br />
-                                                                    <a href="../classes/unikent.KAR.API.html#method_set_url" class="">set_url()</a><br />
-                                                                    <a href="../classes/unikent.KAR.API.html#method_get_url" class="">get_url()</a><br />
-                                                                    <a href="../classes/unikent.KAR.API.html#method_set_timeout" class="">set_timeout()</a><br />
-                                                                    <a href="../classes/unikent.KAR.API.html#method_search_by_id" class="">search_by_id()</a><br />
-                                                                    <a href="../classes/unikent.KAR.API.html#method_search_by_division" class="">search_by_division()</a><br />
-                                                                    <a href="../classes/unikent.KAR.API.html#method_search_by_email" class="">search_by_email()</a><br />
-                                                                    <a href="../classes/unikent.KAR.API.html#method_set_cache_layer" class="">set_cache_layer()</a><br />
+                                                                    <a href="../classes/unikent.KAR.Division.html#method_get_id" class="">get_id()</a><br />
+                                                                    <a href="../classes/unikent.KAR.Division.html#method_get_name" class="">get_name()</a><br />
+                                                                    <a href="../classes/unikent.KAR.Division.html#method_get_url" class="">get_url()</a><br />
+                                                                    <a href="../classes/unikent.KAR.Division.html#method_get_full_path" class="">get_full_path()</a><br />
+                                                                    <a href="../classes/unikent.KAR.Division.html#method_get_first" class="">get_first()</a><br />
+                                                                    <a href="../classes/unikent.KAR.Division.html#method_get_parent" class="">get_parent()</a><br />
+                                                                    <a href="../classes/unikent.KAR.Division.html#method_get_child" class="">get_child()</a><br />
+                                                                    <a href="../classes/unikent.KAR.Division.html#method_get_last" class="">get_last()</a><br />
+                                                                    <a href="../classes/unikent.KAR.Division.html#method___toString" class="">__toString()</a><br />
                                                             </section>
                             <section class="span4">
                                                                     <em>No public properties found</em>
                                                             </section>
                             <section class="span4">
-                                                                    <a href="../classes/unikent.KAR.API.html#constant_LIVE_URL" class="">LIVE_URL</a><br />
-                                                                    <a href="../classes/unikent.KAR.API.html#constant_TRAINING_URL" class="">TRAINING_URL</a><br />
+                                                                    <em>No constants found</em>
                                                             </section>
                         </section>
                         <section class="row-fluid protected">
@@ -281,7 +257,7 @@ foreach ($documents as $document) {
                         </section>
                         <section class="row-fluid private">
                             <section class="span4">
-                                                                    <a href="../classes/unikent.KAR.API.html#method_search_by_url" class="">search_by_url()</a><br />
+                                                                    <em>No private methods found</em>
                                                             </section>
                             <section class="span4">
                                                                     <em>No private properties found</em>
@@ -297,12 +273,12 @@ foreach ($documents as $document) {
                     
                     <dl>
                         <dt>File</dt>
-                            <dd><a href="../files/API.html"><div class="path-wrapper">API.php</div></a></dd>
+                            <dd><a href="../files/Division.html"><div class="path-wrapper">Division.php</div></a></dd>
                                                 <dt>Package</dt>
                             <dd><div class="namespace-wrapper">Default</div></dd>
                                                 <dt>Class hierarchy</dt>
                             <dd class="hierarchy">
-                                                                                                                                                                    <div class="namespace-wrapper">\unikent\KAR\API</div>
+                                                                                                                                                                    <div class="namespace-wrapper">\unikent\KAR\Division</div>
                             </dd>
 
                         
@@ -317,57 +293,7 @@ foreach ($documents as $document) {
                 </aside>
             </div>
 
-                                    <a id="constants" name="constants"></a>
-            <div class="row-fluid">
-                <div class="span8 content class">
-                    <h2>Constants</h2>
-                </div>
-                <aside class="span4 detailsbar"></aside>
-            </div>
-
-                                <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="constant_LIVE_URL" name="constant_LIVE_URL" class="anchor"></a>
-            <article id="constant_LIVE_URL" class="constant">
-                <h3 class="">LIVE_URL</h3>
-                <pre class="signature">LIVE_URL</pre>
-                <p><em>URL of the Live KAR system.</em></p>
-                
-            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                        <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="constant_TRAINING_URL" name="constant_TRAINING_URL" class="anchor"></a>
-            <article id="constant_TRAINING_URL" class="constant">
-                <h3 class="">TRAINING_URL</h3>
-                <pre class="signature">TRAINING_URL</pre>
-                <p><em>URL of the Training KAR system.</em></p>
-                
-            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                        <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
-
-                            
+                        
                         
                                     <a id="methods" name="methods"></a>
             <div class="row-fluid">
@@ -377,22 +303,14 @@ foreach ($documents as $document) {
 
                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="method___construct" name="method___construct" class="anchor"></a>
+            <a id="method_get_id" name="method_get_id" class="anchor"></a>
             <article class="method">
-                <h3 class="public ">__construct()</h3>
+                <h3 class="public ">get_id()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">__construct(string  <span class="argument">$url = null</span>) </pre>
-                <p><em>Constructor.</em></p>
+                <pre class="signature" style="margin-right: 54px;">get_id() </pre>
+                <p><em>Return my ID.</em></p>
                 
 
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td>string</td>
-                                <td>$url </td>
-                                <td><p>Which KAR installation do you want? (just say null)</p></td>
-                            </tr>
-                                            </table>
                 
                 
                 				
@@ -411,22 +329,14 @@ foreach ($documents as $document) {
 
                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="method_set_url" name="method_set_url" class="anchor"></a>
+            <a id="method_get_name" name="method_get_name" class="anchor"></a>
             <article class="method">
-                <h3 class="public ">set_url()</h3>
+                <h3 class="public ">get_name()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">set_url(string  <span class="argument">$url = null</span>) </pre>
-                <p><em>Set URL.</em></p>
+                <pre class="signature" style="margin-right: 54px;">get_name() </pre>
+                <p><em>Return my Name.</em></p>
                 
 
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td>string</td>
-                                <td>$url </td>
-                                <td><p>Which KAR installation do you want? (just say null)</p></td>
-                            </tr>
-                                            </table>
                 
                 
                 				
@@ -450,7 +360,7 @@ foreach ($documents as $document) {
                 <h3 class="public ">get_url()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
                 <pre class="signature" style="margin-right: 54px;">get_url() </pre>
-                <p><em>Returns the URL.</em></p>
+                <p><em>Return my URL.</em></p>
                 
 
                 
@@ -471,22 +381,14 @@ foreach ($documents as $document) {
 
                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="method_set_timeout" name="method_set_timeout" class="anchor"></a>
+            <a id="method_get_full_path" name="method_get_full_path" class="anchor"></a>
             <article class="method">
-                <h3 class="public ">set_timeout()</h3>
+                <h3 class="public ">get_full_path()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">set_timeout(integer  <span class="argument">$timeout</span>) </pre>
-                <p><em>Set a custom CURL timeout</em></p>
+                <pre class="signature" style="margin-right: 54px;">get_full_path() </pre>
+                <p><em>Return a textual representation of myself and my parents.</em></p>
                 
 
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td>integer</td>
-                                <td>$timeout </td>
-                                <td><p>CURL Timeout in ms</p></td>
-                            </tr>
-                                            </table>
                 
                 
                 				
@@ -505,32 +407,14 @@ foreach ($documents as $document) {
 
                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="method_search_by_id" name="method_search_by_id" class="anchor"></a>
+            <a id="method_get_first" name="method_get_first" class="anchor"></a>
             <article class="method">
-                <h3 class="public ">search_by_id()</h3>
+                <h3 class="public ">get_first()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">search_by_id(string  <span class="argument">$eprintid</span>, integer  <span class="argument">$limit = 1000</span>, integer  <span class="argument">$offset</span>) </pre>
-                <p><em>Search KAR for a given eprintid.</em></p>
+                <pre class="signature" style="margin-right: 54px;">get_first() </pre>
+                <p><em>Return the first element in this list.</em></p>
                 
 
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td>string</td>
-                                <td>$eprintid </td>
-                                <td><p>The eprint id.</p></td>
-                            </tr>
-                                                    <tr>
-                                <td>integer</td>
-                                <td>$limit </td>
-                                <td><p>The maximum number of results to return.</p></td>
-                            </tr>
-                                                    <tr>
-                                <td>integer</td>
-                                <td>$offset </td>
-                                <td><p>The offset of results to return.</p></td>
-                            </tr>
-                                            </table>
                 
                 
                 				
@@ -549,32 +433,14 @@ foreach ($documents as $document) {
 
                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="method_search_by_division" name="method_search_by_division" class="anchor"></a>
+            <a id="method_get_parent" name="method_get_parent" class="anchor"></a>
             <article class="method">
-                <h3 class="public ">search_by_division()</h3>
+                <h3 class="public ">get_parent()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">search_by_division(string  <span class="argument">$division</span>, integer  <span class="argument">$limit = 1000</span>, integer  <span class="argument">$offset</span>) </pre>
-                <p><em>Search KAR for a given division.</em></p>
+                <pre class="signature" style="margin-right: 54px;">get_parent() </pre>
+                <p><em>Return the previous element in the list.</em></p>
                 
 
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td>string</td>
-                                <td>$division </td>
-                                <td><p>The division id.</p></td>
-                            </tr>
-                                                    <tr>
-                                <td>integer</td>
-                                <td>$limit </td>
-                                <td><p>The maximum number of results to return.</p></td>
-                            </tr>
-                                                    <tr>
-                                <td>integer</td>
-                                <td>$offset </td>
-                                <td><p>The offset of results to return.</p></td>
-                            </tr>
-                                            </table>
                 
                 
                 				
@@ -593,32 +459,14 @@ foreach ($documents as $document) {
 
                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="method_search_by_email" name="method_search_by_email" class="anchor"></a>
+            <a id="method_get_child" name="method_get_child" class="anchor"></a>
             <article class="method">
-                <h3 class="public ">search_by_email()</h3>
+                <h3 class="public ">get_child()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">search_by_email(string  <span class="argument">$email</span>, integer  <span class="argument">$limit = 1000</span>, integer  <span class="argument">$offset</span>) </pre>
-                <p><em>Search KAR for a given author&#039;s email.</em></p>
+                <pre class="signature" style="margin-right: 54px;">get_child() </pre>
+                <p><em>Return the next element in the list.</em></p>
                 
 
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td>string</td>
-                                <td>$email </td>
-                                <td><p>The author's email.</p></td>
-                            </tr>
-                                                    <tr>
-                                <td>integer</td>
-                                <td>$limit </td>
-                                <td><p>The maximum number of results to return.</p></td>
-                            </tr>
-                                                    <tr>
-                                <td>integer</td>
-                                <td>$offset </td>
-                                <td><p>The offset of results to return.</p></td>
-                            </tr>
-                                            </table>
                 
                 
                 				
@@ -637,22 +485,14 @@ foreach ($documents as $document) {
 
                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="method_set_cache_layer" name="method_set_cache_layer" class="anchor"></a>
+            <a id="method_get_last" name="method_get_last" class="anchor"></a>
             <article class="method">
-                <h3 class="public ">set_cache_layer()</h3>
+                <h3 class="public ">get_last()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">set_cache_layer(object  <span class="argument">$cache</span>) </pre>
-                <p><em>Set a cache object.</em></p>
-                <p>This API expects it can call &quot;set($key, $value)&quot; and &quot;get($key)&quot; and wont try to do anything else.</p>
+                <pre class="signature" style="margin-right: 54px;">get_last() </pre>
+                <p><em>Return the last element in this list.</em></p>
+                
 
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td>object</td>
-                                <td>$cache </td>
-                                <td><p>An object with get and set methods.</p></td>
-                            </tr>
-                                            </table>
                 
                 
                 				
@@ -669,34 +509,16 @@ foreach ($documents as $document) {
         </aside>
     </div>
 
-                                                                    <div class="row-fluid">
+                                    <div class="row-fluid">
         <div class="span8 content class">
-            <a id="method_search_by_url" name="method_search_by_url" class="anchor"></a>
+            <a id="method___toString" name="method___toString" class="anchor"></a>
             <article class="method">
-                <h3 class="private ">search_by_url()</h3>
+                <h3 class="public ">__toString()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">search_by_url(string  <span class="argument">$url</span>, integer  <span class="argument">$limit = 1000</span>, integer  <span class="argument">$offset</span>) </pre>
-                <p><em>Search KAR for a given x.</em></p>
+                <pre class="signature" style="margin-right: 54px;">__toString() </pre>
+                <p><em>To String.</em></p>
                 
 
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td>string</td>
-                                <td>$url </td>
-                                <td><p>The URL to grab.</p></td>
-                            </tr>
-                                                    <tr>
-                                <td>integer</td>
-                                <td>$limit </td>
-                                <td><p>The maximum number of results to return.</p></td>
-                            </tr>
-                                                    <tr>
-                                <td>integer</td>
-                                <td>$offset </td>
-                                <td><p>The offset of results to return.</p></td>
-                            </tr>
-                                            </table>
                 
                 
                 				
@@ -713,16 +535,16 @@ foreach ($documents as $document) {
         </aside>
     </div>
 
-                                    </div>
+                                                                    </div>
     </section>
 
     <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h3 id="source-view-label">API.php</h3>
+            <h3 id="source-view-label">Division.php</h3>
         </div>
         <div class="modal-body">
-            <pre data-src="../files/API.php.txt" class="language-php line-numbers"></pre>
+            <pre data-src="../files/Division.php.txt" class="language-php line-numbers"></pre>
         </div>
     </div>
 
