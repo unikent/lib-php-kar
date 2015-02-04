@@ -6,6 +6,7 @@
       "library", "api", "kar"
    ],
    "homepage": "https://github.com/unikent/lib-php-kar",
+   "license": "GPL-2.0+",
    "authors": [{
       "name": "Skylar Tristan Kelty",
       "email": "s.kelty@kent.ac.uk",
