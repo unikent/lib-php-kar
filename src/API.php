@@ -89,15 +89,15 @@ class API
     }
 
     /**
-     * Search KAR for a given author's emails.
+     * Search KAR for a given x.
      *
-     * @param string $email The author's email.
+     * @param string $url The URL to grab.
      * @param int $limit The maximum number of results to return.
      * @param int $offset The offset of results to return.
      */
-    public function search_author($email, $limit = 1000, $offset = 0) {
-        $query = "?q=" . urlencode($email) . "&limit=" . urlencode($limit) . "&offset=" . urlencode($offset);
-        $json = $this->curl($this->_url . "/cgi/api/search" . $query);
+    private function search_by_url($url, $limit = 1000, $offset = 0) {
+        $query = "&limit=" . urlencode($limit) . "&offset=" . urlencode($offset);
+        $json = $this->curl($this->_url . $url . $query);
         $objects = json_decode($json);
 
         if (!is_array($objects)) {
@@ -110,6 +110,39 @@ class API
         }
         
         return $objects;
+    }
+
+    /**
+     * Search KAR for a given eprintid.
+     *
+     * @param string $eprintid The eprint id.
+     * @param int $limit The maximum number of results to return.
+     * @param int $offset The offset of results to return.
+     */
+    public function search_by_id($eprintid, $limit = 1000, $offset = 0) {
+        return $this->search_by_url("/cgi/api/search_by_id" . "?q=" . urlencode($eprintid), $limit, $offset);
+    }
+
+    /**
+     * Search KAR for a given division.
+     *
+     * @param string $division The division id.
+     * @param int $limit The maximum number of results to return.
+     * @param int $offset The offset of results to return.
+     */
+    public function search_by_id($division, $limit = 1000, $offset = 0) {
+        return $this->search_by_url("/cgi/api/search_by_division" . "?q=" . urlencode($division), $limit, $offset);
+    }
+
+    /**
+     * Search KAR for a given author's email.
+     *
+     * @param string $email The author's email.
+     * @param int $limit The maximum number of results to return.
+     * @param int $offset The offset of results to return.
+     */
+    public function search_by_email($email, $limit = 1000, $offset = 0) {
+        return $this->search_by_url("/cgi/api/search_by_email" . "?q=" . urlencode($email), $limit, $offset);
     }
 
     /**
