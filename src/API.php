@@ -130,7 +130,7 @@ class API
      * @param int $limit The maximum number of results to return.
      * @param int $offset The offset of results to return.
      */
-    public function search_by_id($division, $limit = 1000, $offset = 0) {
+    public function search_by_division($division, $limit = 1000, $offset = 0) {
         return $this->search_by_url("/cgi/api/search_by_division" . "?q=" . urlencode($division), $limit, $offset);
     }
 
@@ -151,7 +151,7 @@ class API
      * @internal
      * @param string $eprintid The eprint id.
      */
-    public function get_people($eprintid, $map) {
+    public function get_people($eprintid) {
         $eprintid = urlencode($eprintid);
         $json = $this->curl($this->_url . "/cgi/api/get_people?eprintid=$eprintid");
         $objects = json_decode($json);
@@ -183,12 +183,7 @@ class API
             return null;
         }
 
-        foreach ($objects as $k => $v) {
-            $object = Division::create_from_api($this, $v);
-            $objects[$k] = $object;
-        }
-        
-        return $objects;
+        return Division::create_paths_from_api($this, $objects);
     }
 
     /**

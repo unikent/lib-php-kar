@@ -8,8 +8,6 @@
 
 namespace unikent\KAR;
 
-use \academicpuma\citeproc\CiteProc;
-
 /**
  * A publiction, as KAR sees them.
  */
@@ -40,6 +38,14 @@ class Publication
     private $_people;
 
     /**
+     * Divisions.
+     * 
+     * @internal
+     * @param array
+     */
+    private $_divisions;
+
+    /**
      * Constructor.
      *
      * @internal
@@ -49,6 +55,7 @@ class Publication
         $this->_api = $api;
         $this->_data = array();
         $this->_people = null;
+        $this->_divisions = null;
     }
 
     /**
@@ -76,7 +83,7 @@ class Publication
      * Get all people associated with this publication.
      */
     private function build_people_cache() {
-        if (!empty($this->_people)) {
+        if ($this->_people !== null) {
             return;
         }
 
@@ -96,7 +103,7 @@ class Publication
         $people = $this->_api->get_people($eprintid);
         foreach ($people as $person) {
             $type = $person->get_type();
-            $this->_people[$type] = $person;
+            $this->_people[$type][] = $person;
         }
     }
 
@@ -378,10 +385,28 @@ class Publication
     }
 
     /**
+     * Get all divisions associated with this publication.
+     */
+    private function build_division_cache() {
+        if ($this->_divisions !== null) {
+            return;
+        }
+
+        $eprintid = $this->get_id();
+        if (empty($eprintid)) {
+            return;
+        }
+
+        // Grab divisions from the API.
+        $this->_divisions = $this->_api->get_divisions($eprintid);
+    }
+
+    /**
      * Returns divisions this item belongs to.
      */
     public function get_divisions() {
-        return explode(":", $this->_data['divisions']);
+        $this->build_division_cache();
+        return $this->_divisions;
     }
 
     /**
@@ -450,7 +475,10 @@ class Publication
      */
     public function __toString() {
         $str = $this->get_title() . "\n";
-        $str .= "By " . implode(', ', $this->_authors) . "\n";
+        $authors = $this->get_authors();
+        if (!empty($authors)) {
+            $str .= "By " . implode(', ', $authors) . "\n";
+        }
         $str .= "See " . $this->get_url() . "\n";
 
         return $str;
@@ -625,7 +653,7 @@ class Publication
             }
 
             $csl = file_get_contents($filename);
-            $parsers[$csl] = new CiteProc($csl);
+            $parsers[$csl] = new \academicpuma\citeproc\CiteProc($csl);
         }
 
         return $parsers[$csl];
