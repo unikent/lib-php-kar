@@ -15,12 +15,12 @@
       "php": ">=5.3",
       "academicpuma/citeproc-php": "1.0.0-beta"
    },
+   "require-dev": {
+      "phpdocumentor/phpdocumentor": "2.*"
+   },
    "autoload": {
       "psr-4": {
          "unikent\\KAR\\": ["src/"]
       }
-   },
-   "require-dev": {
-      "phpdocumentor/phpdocumentor": "2.7"
    }
 }

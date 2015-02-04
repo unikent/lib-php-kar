@@ -486,6 +486,8 @@ class Publication
 
     /**
      * Return formatted citation in given reference style.
+     *
+     * @param string $csl The name of the csl file to use.
      */
     public function as_citation($csl = 'apa') {
         // Get parser for this citation format.
