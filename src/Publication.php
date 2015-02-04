@@ -501,9 +501,11 @@ class Publication
         $publication->abstract = $this->get_abstract();
         $publication->number = $this->get_number();
         $publication->page = $this->get_page_range();
+
         $publication->publisher = $this->get_publisher();
+        $publication->{"publisher-place"} = $this>get_place_of_pub();
+
         $publication->title = $this->get_title();
-        
         $publication->URL = $this->get_official_url();
 
         $publication->volume = $this->get_volume();
@@ -533,7 +535,6 @@ class Publication
                 "given" => $author->get_firstname(),
                 "family" => $author->get_lastname()
             );
-
             $publication->author[] = (object)$record;
         }
 
@@ -542,7 +543,6 @@ class Publication
                 "given" => $editor->get_firstname(),
                 "family" => $editor->get_lastname()
             );
-
             $publication->editor[] = (object)$record;
         }
 
@@ -551,10 +551,9 @@ class Publication
        
         $publication->documents = array();
         $publication->edition = '';
-        $publication->{"event-place"} = '';
         $publication->issue = '';
         $publication->note = '';
-        $publication->{"publisher-place"} = '';
+        
 
         return $publication;
     }
