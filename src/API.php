@@ -26,6 +26,11 @@ class API
     const TRAINING_URL = 'https://kar-training.kent.ac.uk';
 
     /**
+     * URL of the Test KAR system.
+     */
+    const TEST_URL = 'https://kar-test.kent.ac.uk';
+
+    /**
      * CURL Timeout.
      * 
      * @internal
