@@ -112,8 +112,7 @@ class Person
      * Returns the URL for this person.
      */
     public function get_url() {
-        $email = strtolower($this->_email);
-        return $this->_api->get_url() . "/view/email/" . $this->_api->encode_string($email) . ".html";
+        return $this->_api->get_person_url($this->_email);
     }
 
     /**

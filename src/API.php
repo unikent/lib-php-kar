@@ -244,6 +244,16 @@ class API
     }
 
     /**
+     * Returns the URL for a person.
+     * 
+     * @param string $email The person's email address.
+     */
+    public function get_person_url($email) {
+        $email = strtolower($email);
+        return $this->get_url() . "/view/email/" . $this->encode_string($email) . ".html";
+    }
+
+    /**
      * Encode a string in EPrints URL format.
      *
      * @internal
