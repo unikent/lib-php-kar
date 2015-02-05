@@ -64,11 +64,17 @@ class Person
     /**
      * Constructor.
      *
-     * @internal
      * @param object $api The API we are related to.
+     * @param string $firstname The firstname.
+     * @param string $lastname The lastname.
+     * @param string $email The email.
      */
-    private function __construct($api) {
+    public function __construct($api, $firstname, $lastname, $email) {
         $this->_api = $api;
+        $this->set_firstname($firstname);
+        $this->set_lastname($lastname);
+        $this->set_email($email);
+        $this->set_type('misc');
     }
 
     /**
@@ -79,10 +85,7 @@ class Person
      * @param object $data The data.
      */
     public static function create_from_api($api, $data) {
-        $person = new static($api);
-        $person->set_firstname($data->given_name);
-        $person->set_lastname($data->family_name);
-        $person->set_email($data->email);
+        $person = new static($api, $data->given_name, $data->family_name, $data->email);
         $person->set_type($data->type);
 
         return $person;
@@ -91,7 +94,6 @@ class Person
     /**
      * Set the person's firstname.
      * 
-     * @internal
      * @param string $firstname A firstname.
      */
     public function set_firstname($firstname) {
@@ -101,7 +103,6 @@ class Person
     /**
      * Set the person's lastname.
      * 
-     * @internal
      * @param string $lastname A lastname.
      */
     public function set_lastname($lastname) {
@@ -111,7 +112,6 @@ class Person
     /**
      * Set the person's email.
      * 
-     * @internal
      * @param string $email A email.
      */
     public function set_email($email) {
