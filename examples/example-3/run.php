@@ -18,7 +18,8 @@ $documents = $api->search_by_email($argv[1]);
 
 foreach ($documents as $document) {
     echo "---------------------------------\n";
-    echo $document->get_title() . "\n";
+    echo "{$document}\n";
+
     $divisions = $document->get_divisions();
     foreach ($divisions as $division) {
         echo $division->get_full_path() . "\n";
