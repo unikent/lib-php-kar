@@ -648,8 +648,8 @@ class Publication
                 throw new \Exception("Invalid CSL: " . $csl);
             }
 
-            $csl = file_get_contents($filename);
-            $parsers[$csl] = new \academicpuma\citeproc\CiteProc($csl);
+            $cslcontent = file_get_contents($filename);
+            $parsers[$csl] = new \academicpuma\citeproc\CiteProc($cslcontent);
         }
 
         return $parsers[$csl];
