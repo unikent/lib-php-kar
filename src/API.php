@@ -250,10 +250,9 @@ class API
      * @param string $string The string to encode.
      */
     public function encode_string($string) {
-        $string = urlencode($string);
+        $string = rawurlencode($string);
         $string = str_replace('%', '=', $string);
         $string = str_replace('.', '=2E', $string);
-        $string = str_replace('/', '=2F', $string);
 
         return $string;
     }
