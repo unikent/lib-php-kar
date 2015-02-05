@@ -46,14 +46,6 @@ class Person
     private $_email;
 
     /**
-     * Person Type.
-     * 
-     * @internal
-     * @param string
-     */
-    private $_type;
-
-    /**
      * Publications (if grabbed).
      * 
      * @internal
@@ -71,10 +63,10 @@ class Person
      */
     public function __construct($api, $firstname, $lastname, $email) {
         $this->_api = $api;
-        $this->set_firstname($firstname);
-        $this->set_lastname($lastname);
-        $this->set_email($email);
-        $this->set_type('misc');
+        $this->_firstname = $firstname;
+        $this->_lastname = $lastname;
+        $this->_email = $email;
+        $this->_publications = null;
     }
 
     /**
@@ -85,48 +77,14 @@ class Person
      * @param object $data The data.
      */
     public static function create_from_api($api, $data) {
-        $person = new static($api, $data->given_name, $data->family_name, $data->email);
-        $person->set_type($data->type);
+        static $cache = array();
 
-        return $person;
-    }
+        if (!isset($cache[$data->email])) {
+            $person = new static($api, $data->given_name, $data->family_name, $data->email);
+            $cache[$data->email] = $person;
+        }
 
-    /**
-     * Set the person's firstname.
-     * 
-     * @param string $firstname A firstname.
-     */
-    public function set_firstname($firstname) {
-        $this->_firstname = $firstname;
-    }
-
-    /**
-     * Set the person's lastname.
-     * 
-     * @param string $lastname A lastname.
-     */
-    public function set_lastname($lastname) {
-        $this->_lastname = $lastname;
-    }
-
-    /**
-     * Set the person's email.
-     * 
-     * @param string $email A email.
-     */
-    public function set_email($email) {
-        $this->_email = $email;
-        $this->_publications = null;
-    }
-
-    /**
-     * Set the person's type.
-     * 
-     * @internal
-     * @param string $type A type.
-     */
-    public function set_type($type) {
-        $this->_type = $type;
+        return $cache[$data->email];
     }
 
     /**
@@ -148,15 +106,6 @@ class Person
      */
     public function get_email() {
         return $this->_email;
-    }
-
-    /**
-     * Returns the person's type.
-     * 
-     * @internal
-     */
-    public function get_type() {
-        return $this->_type;
     }
 
     /**
