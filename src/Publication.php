@@ -67,15 +67,7 @@ class Publication
      */
     public static function create_from_api($api, $data) {
         $obj = new static($api);
-
-        foreach ((array)$data as $k => $v) {
-            if (in_array($k, array('authors', 'editors', 'reviewers', 'funders'))) {
-                continue;
-            }
-
-            $obj->_data[$k] = $v;
-        }
-
+        $obj->_data = (array)$data;
         return $obj;
     }
 
@@ -100,10 +92,12 @@ class Publication
         );
 
         // Grab people from the API.
-        $people = $this->_api->get_people($eprintid);
-        foreach ($people as $person) {
-            $type = $person->get_type();
-            $this->_people[$type][] = $person;
+        $types = $this->_api->get_people($eprintid);
+        foreach ($types as $type => $people) {
+            $this->_people[$type] = array();
+            foreach ($people as $person) {
+                $this->_people[$type][] = $person;
+            }
         }
     }
 
