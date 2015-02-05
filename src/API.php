@@ -47,6 +47,14 @@ class API
     private $_url;
 
     /**
+     * A Static Internal Cache Layer.
+     * 
+     * @internal
+     * @var mixed
+     */
+    private $_internal_cache;
+
+    /**
      * A Cache Layer.
      * 
      * @internal
@@ -62,6 +70,8 @@ class API
     public function __construct($url = null) {
         $this->set_url($url);
         $this->set_timeout(0);
+        $this->_cache = new StaticCache();
+        $this->_internal_cache = new StaticCache();
     }
 
     /**
@@ -94,6 +104,38 @@ class API
     }
 
     /**
+     * Cache people for eprintids.
+     */
+    private function cache_people($ids) {
+        $ids = urlencode(join(',', $ids));
+        $json = $this->curl($this->_url . "/cgi/api/get_people_multi?q=$ids");
+        $data = json_decode($json);
+        if (!$data) {
+            return;
+        }
+
+        foreach ((array)$data as $eprintid => $people) {
+            $this->_internal_cache->set($eprintid . '_people', $people);
+        }
+    }
+
+    /**
+     * Cache divisions for eprintids.
+     */
+    private function cache_divisions($ids) {
+        $ids = urlencode(join(',', $ids));
+        $json = $this->curl($this->_url . "/cgi/api/get_divisions_multi?q=$ids");
+        $data = json_decode($json);
+        if (!$data) {
+            return;
+        }
+
+        foreach ((array)$data as $eprintid => $divisions) {
+            $this->_internal_cache->set($eprintid . '_divisions', $divisions);
+        }
+    }
+
+    /**
      * Search KAR for a given x.
      *
      * @param string $url The URL to grab.
@@ -109,10 +151,16 @@ class API
             return null;
         }
 
+        $ids = array();
         foreach ($objects as $k => $v) {
             $object = Publication::create_from_api($this, $v);
             $objects[$k] = $object;
+
+            $ids[] = $object->get_id();
         }
+
+        $this->cache_people($ids);
+        $this->cache_divisions($ids);
         
         return $objects;
     }
@@ -125,7 +173,7 @@ class API
      * @param int $offset The offset of results to return.
      */
     public function search_by_id($eprintid, $limit = 1000, $offset = 0) {
-        return $this->search_by_url("/cgi/api/search_by_id" . "?q=" . urlencode($eprintid), $limit, $offset);
+        return $this->search_by_url("/cgi/api/search_by_id?q=" . urlencode($eprintid), $limit, $offset);
     }
 
     /**
@@ -136,7 +184,7 @@ class API
      * @param int $offset The offset of results to return.
      */
     public function search_by_division($division, $limit = 1000, $offset = 0) {
-        return $this->search_by_url("/cgi/api/search_by_division" . "?q=" . urlencode($division), $limit, $offset);
+        return $this->search_by_url("/cgi/api/search_by_division?q=" . urlencode($division), $limit, $offset);
     }
 
     /**
@@ -147,7 +195,7 @@ class API
      * @param int $offset The offset of results to return.
      */
     public function search_by_email($email, $limit = 1000, $offset = 0) {
-        return $this->search_by_url("/cgi/api/search_by_email" . "?q=" . urlencode($email), $limit, $offset);
+        return $this->search_by_url("/cgi/api/search_by_email?q=" . urlencode($email), $limit, $offset);
     }
 
     /**
@@ -157,20 +205,23 @@ class API
      * @param string $eprintid The eprint id.
      */
     public function get_people($eprintid) {
-        $eprintid = urlencode($eprintid);
-        $json = $this->curl($this->_url . "/cgi/api/get_people?eprintid=$eprintid");
-        $objects = json_decode($json);
-
-        if (!is_array($objects)) {
-            return null;
+        if (!isset($this->_internal_cache->{$eprintid . '_people'})) {
+            $this->cache_people(array($eprintid));
         }
 
-        foreach ($objects as $k => $v) {
+        $people = array();
+
+        $data = $this->_internal_cache->get($eprintid . '_people');
+        foreach ($data as $k => $v) {
+            if (!isset($people[$v->type])) {
+                $people[$v->type] = array();
+            }
+
             $object = Person::create_from_api($this, $v);
-            $objects[$k] = $object;
+            $people[$v->type][$k] = $object;
         }
         
-        return $objects;
+        return $people;
     }
 
     /**
@@ -180,15 +231,16 @@ class API
      * @param string $eprintid The eprint id.
      */
     public function get_divisions($eprintid) {
-        $eprintid = urlencode($eprintid);
-        $json = $this->curl($this->_url . "/cgi/api/get_divisions?eprintid=$eprintid");
-        $objects = json_decode($json);
+        if (!isset($this->_internal_cache->{$eprintid . '_divisions'})) {
+            $this->cache_divisions(array($eprintid));
+        }
 
-        if (!is_array($objects)) {
+        $data = $this->_internal_cache->get($eprintid . '_divisions');
+        if (!is_array($data)) {
             return null;
         }
 
-        return Division::create_paths_from_api($this, $objects);
+        return Division::create_paths_from_api($this, $data);
     }
 
     /**
