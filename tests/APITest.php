@@ -13,14 +13,14 @@ class APITest extends PHPUnit_Framework_TestCase
      */
     public function testPullID()
     {
-        $api = new \unikent\KAR\API();
+        $api = new \unikent\KAR\API(\unikent\KAR\API::TEST_URL);
 
-        $documents = $api->search_by_id(4);
+        $documents = $api->search_by_id(41236);
 
         $this->assertEquals(1, count($documents));
 
         $document = reset($documents);
 
-        $this->assertEquals(4, $document->get_id());
+        $this->assertEquals(41236, $document->get_id());
     }
 }
