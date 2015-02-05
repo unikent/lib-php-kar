@@ -108,7 +108,7 @@ class API
      */
     private function cache_people($ids) {
         $ids = urlencode(join(',', $ids));
-        $json = $this->curl($this->_url . "/cgi/api/get_people_multi?q=$ids");
+        $json = $this->curl($this->_url . "/cgi/api/get_people?q=$ids");
         $data = json_decode($json);
         if (!$data) {
             return;
@@ -124,7 +124,7 @@ class API
      */
     private function cache_divisions($ids) {
         $ids = urlencode(join(',', $ids));
-        $json = $this->curl($this->_url . "/cgi/api/get_divisions_multi?q=$ids");
+        $json = $this->curl($this->_url . "/cgi/api/get_divisions?q=$ids");
         $data = json_decode($json);
         if (!$data) {
             return;
