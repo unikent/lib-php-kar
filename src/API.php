@@ -47,12 +47,12 @@ class API
     private $_url;
 
     /**
-     * A Static Cache Layer.
+     * A Static Internal Cache Layer.
      * 
      * @internal
      * @var mixed
      */
-    private $_static_cache;
+    private $_internal_cache;
 
     /**
      * A Cache Layer.
@@ -70,7 +70,8 @@ class API
     public function __construct($url = null) {
         $this->set_url($url);
         $this->set_timeout(0);
-        $this->_static_cache = array();
+        $this->_cache = new StaticCache();
+        $this->_internal_cache = new StaticCache();
     }
 
     /**
@@ -114,7 +115,7 @@ class API
         }
 
         foreach ((array)$data as $eprintid => $people) {
-            $this->_static_cache[$eprintid . '_people'] = $people;
+            $this->_internal_cache->set($eprintid . '_people', $people);
         }
     }
 
@@ -130,7 +131,7 @@ class API
         }
 
         foreach ((array)$data as $eprintid => $divisions) {
-            $this->_static_cache[$eprintid . '_divisions'] = $divisions;
+            $this->_internal_cache->set($eprintid . '_divisions', $divisions);
         }
     }
 
@@ -204,13 +205,13 @@ class API
      * @param string $eprintid The eprint id.
      */
     public function get_people($eprintid) {
-        if (!isset($this->_static_cache[$eprintid . '_people'])) {
+        if (!isset($this->_internal_cache->{$eprintid . '_people'})) {
             $this->cache_people(array($eprintid));
         }
 
         $people = array();
 
-        $data = $this->_static_cache[$eprintid . '_people'];
+        $data = $this->_internal_cache->get($eprintid . '_people');
         foreach ($data as $k => $v) {
             if (!isset($people[$v->type])) {
                 $people[$v->type] = array();
@@ -230,11 +231,11 @@ class API
      * @param string $eprintid The eprint id.
      */
     public function get_divisions($eprintid) {
-        if (!isset($this->_static_cache[$eprintid . '_divisions'])) {
+        if (!isset($this->_internal_cache->{$eprintid . '_divisions'})) {
             $this->cache_divisions(array($eprintid));
         }
 
-        $data = $this->_static_cache[$eprintid . '_divisions'];
+        $data = $this->_internal_cache->get($eprintid . '_divisions');
         if (!is_array($data)) {
             return null;
         }
