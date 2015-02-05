@@ -8,8 +8,6 @@ php:
 cache:
   directories:
   - vendor/
-before_install:
-  - composer self-update
 before_script:
   - if [ ! -d "vendor/phpunit" ]; then composer install; fi
 script: php vendor/bin/phpunit --colors --bootstrap vendor/autoload.php tests/
