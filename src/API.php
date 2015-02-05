@@ -158,19 +158,25 @@ class API
      */
     public function get_people($eprintid) {
         $eprintid = urlencode($eprintid);
-        $json = $this->curl($this->_url . "/cgi/api/get_people?eprintid=$eprintid");
+        $json = $this->curl($this->_url . "/cgi/api/get_people_multi?q=$eprintid");
         $objects = json_decode($json);
 
         if (!is_array($objects)) {
             return null;
         }
 
+        $people = array();
+
         foreach ($objects as $k => $v) {
+            if (!isset($people[$v->type])) {
+                $people[$v->type] = array();
+            }
+
             $object = Person::create_from_api($this, $v);
-            $objects[$k] = $object;
+            $people[$v->type][$k] = $object;
         }
         
-        return $objects;
+        return $people;
     }
 
     /**
