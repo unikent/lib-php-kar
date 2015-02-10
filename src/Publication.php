@@ -225,6 +225,39 @@ class Publication
     }
 
     /**
+     * Returns the pretty type.
+     */
+    public function get_pretty_type() {
+        static $map = array(
+            'book_section' => 'Book section',
+            'conference_item' => 'Conference or workshop item',
+            'dataset' => 'Datasets / databases',
+            'edbook' => 'Edited book',
+            'exhibition' => 'Show / exhibition',
+            'internet' => 'Internet publication',
+            'monograph' => 'Monograph',
+            'other' => 'Other',
+            'patent' => 'Patent',
+            'performance' => 'Performance',
+            'research_report' => 'Research report (external)',
+            'review' => 'Review',
+            'scholarlyed' => 'Scholarly edition',
+            'thesis' => 'Thesis',
+            'video' => 'Visual media'
+        );
+
+        $type = $this->get_type();
+        $type = str_replace('\\', '', $type);
+
+        if (isset($map[$type])) {
+            return $map[$type];
+        }
+
+        $type = str_replace('_', ' ', $type);
+        return ucwords($type);
+    }
+
+    /**
      * Returns the publication location.
      */
     public function get_location() {

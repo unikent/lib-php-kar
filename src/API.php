@@ -10,7 +10,7 @@ namespace unikent\KAR;
 
 /**
  * KAR API.
- * 
+ *
  * @example ../examples/example-1/run.php How to grab an author's documents from KAR.
  */
 class API
@@ -32,7 +32,7 @@ class API
 
     /**
      * CURL Timeout.
-     * 
+     *
      * @internal
      * @var int
      */
@@ -48,7 +48,7 @@ class API
 
     /**
      * A Static Internal Cache Layer.
-     * 
+     *
      * @internal
      * @var mixed
      */
@@ -56,7 +56,7 @@ class API
 
     /**
      * A Cache Layer.
-     * 
+     *
      * @internal
      * @var mixed
      */
@@ -76,7 +76,7 @@ class API
 
     /**
      * Set URL.
-     * 
+     *
      * @param string $url Which KAR installation do you want? (just say null)
      */
     public function set_url($url = null) {
@@ -161,7 +161,7 @@ class API
 
         $this->cache_people($ids);
         $this->cache_divisions($ids);
-        
+
         return $objects;
     }
 
@@ -220,13 +220,13 @@ class API
             $object = Person::create_from_api($this, $v);
             $people[$v->type][$k] = $object;
         }
-        
+
         return $people;
     }
 
     /**
      * Return all people associated with a publication.
-     * 
+     *
      * @internal
      * @param string $eprintid The eprint id.
      */
@@ -245,7 +245,7 @@ class API
 
     /**
      * Returns the URL for a person.
-     * 
+     *
      * @param string $email The person's email address.
      */
     public function get_person_url($email) {
