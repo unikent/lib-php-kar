@@ -39,6 +39,14 @@ class API
     private $_timeout;
 
     /**
+     * CURL Proxy.
+     * 
+     * @internal
+     * @var string
+     */
+    private $_proxy;
+
+    /**
      * URL of KAR.
      *
      * @internal
@@ -101,6 +109,15 @@ class API
      */
     public function set_timeout($timeout) {
         $this->_timeout = $timeout;
+    }
+
+     /**
+     * Set a custom CURL proxy
+     *
+     * @param string $proxy CURL proxy url
+     */
+    public function set_proxy($proxy) {
+        $this->_proxy = $proxy;
     }
 
     /**
@@ -308,6 +325,10 @@ class API
             curl_setopt($ch, CURLOPT_TIMEOUT_MS, $this->_timeout);
         }
 
+        if (!empty($this->_proxy)) {
+            curl_setopt($ch, CURLOPT_PROXY, $this->_proxy);
+        }
+        
         $result = curl_exec($ch);
 
         if ($this->_cache !== null) {
