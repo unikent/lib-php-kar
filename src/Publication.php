@@ -412,6 +412,13 @@ class Publication
     }
 
     /**
+     * Is it published?
+     */
+    public function is_published() {
+        return $this->get_ispublished() == 'pub';
+    }
+
+    /**
      * Get all divisions associated with this publication.
      */
     private function build_division_cache() {
