@@ -126,7 +126,7 @@ class Person
 
         // Do we have a list?
         if ($this->_publications === null) {
-            $this->_publications = $this->_api->search_author($this->_email);
+            $this->_publications = $this->_api->search_by_email($this->_email);
         }
 
         return $this->_publications;

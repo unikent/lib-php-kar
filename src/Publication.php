@@ -541,41 +541,41 @@ class Publication
         $publication = new \stdClass();
         
         // Add basic params to pub object
-        $publication->id = $this->get_id();
-        $publication->type = $this->get_citeproc_type();
+        $publication->id = htmlentities($this->get_id());
+        $publication->type = htmlentities($this->get_citeproc_type());
 
-        $publication->DOI = $this->get_id_number();
-        $publication->ISSN = $this->get_issn();
-        $publication->ISBN = $this->get_isbn();
+        $publication->DOI = htmlentities($this->get_id_number());
+        $publication->ISSN = htmlentities($this->get_issn());
+        $publication->ISBN = htmlentities($this->get_isbn());
 
      
-        $publication->abstract = $this->get_abstract();
-        $publication->number = $this->get_number();
-        $publication->page = $this->get_page_range();
+        $publication->abstract = htmlentities($this->get_abstract());
+        $publication->number = htmlentities($this->get_number());
+        $publication->page = htmlentities($this->get_page_range());
 
-        $publication->publisher = $this->get_publisher();
-        $publication->{"publisher-place"} = $this->get_place_of_pub();
+        $publication->publisher = htmlentities($this->get_publisher());
+        $publication->{"publisher-place"} = htmlentities($this->get_place_of_pub());
 
-        $publication->title = $this->get_title();
-        $publication->URL = $this->get_official_url();
+        $publication->title = htmlentities($this->get_title());
+        $publication->URL = htmlentities($this->get_official_url());
 
-        $publication->volume = $this->get_volume();
+        $publication->volume = htmlentities($this->get_volume());
         $publication->issued = (object) array(
-            "date-parts" => array(array($this->get_year())),
-            "literal" => $this->get_year()
+            "date-parts" => array(array(htmlentities($this->get_year()))),
+            "literal" => htmlentities($this->get_year())
         );
 
-        $publication->event = $this->get_event_title();
-        $publication->{"event-date"} = $this->get_event_dates();
-        $publication->{"event-place"} = $this->get_event_location();
+        $publication->event = htmlentities($this->get_event_title());
+        $publication->{"event-date"} = htmlentities($this->get_event_dates());
+        $publication->{"event-place"} = htmlentities($this->get_event_location());
 
-        $publication->medium = $this->get_output_media();
+        $publication->medium = htmlentities($this->get_output_media());
 
-        $publication->performance_type = $this->get_performance_type();
+        $publication->performance_type = htmlentities($this->get_performance_type());
 
-        $publication->{"container-title"} = $this->get_book_title();
+        $publication->{"container-title"} = htmlentities($this->get_book_title());
 
-        $publication->{"number-of-pages"} = $this->get_pages();
+        $publication->{"number-of-pages"} = htmlentities($this->get_pages());
 
         // Convert author & editor fields
         $publication->author = array();
@@ -583,16 +583,16 @@ class Publication
 
         foreach ($this->get_authors() as $author) {
             $record = array(
-                "given" => $author->get_firstname(),
-                "family" => $author->get_lastname()
+                "given" => htmlentities($author->get_firstname()),
+                "family" => htmlentities($author->get_lastname())
             );
             $publication->author[] = (object)$record;
         }
 
         foreach ($this->get_editors() as $editor) {
             $record = array(
-                "given" => $editor->get_firstname(),
-                "family" => $editor->get_lastname()
+                "given" => htmlentities($editor->get_firstname()),
+                "family" => htmlentities($editor->get_lastname())
             );
             $publication->editor[] = (object)$record;
         }
@@ -604,9 +604,9 @@ class Publication
         $publication->edition = '';
         $publication->issue = '';
         $publication->note = '';
-
         return $publication;
     }
+
 
     /**
      * Converts KAR type to CiteProc type.
