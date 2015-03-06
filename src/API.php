@@ -317,7 +317,7 @@ class API
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HEADER,         false);
         curl_setopt($ch, CURLOPT_HTTP_VERSION,   CURL_HTTP_VERSION_1_1);
-        curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain'));
+        curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain; charset=UTF-8'));
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
         if ($this->_timeout > 0) {

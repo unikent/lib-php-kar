@@ -556,7 +556,7 @@ class Publication
         $publication->publisher = htmlentities($this->get_publisher());
         $publication->{"publisher-place"} = htmlentities($this->get_place_of_pub());
 
-        $publication->title = htmlentities($this->get_title());
+        $publication->title = htmlentities($this->get_title(), ENT_COMPAT | ENT_HTML401 , 'UTF-8');
         $publication->URL = htmlentities($this->get_official_url());
 
         $publication->volume = htmlentities($this->get_volume());
