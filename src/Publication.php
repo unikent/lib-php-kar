@@ -580,6 +580,7 @@ class Publication
             $publication->{"container-title"} = htmlentities($this->get_publication(), ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE , 'UTF-8', false);
         } // Conference items should use event title.
         elseif($publication->type == 'paper-conference')
+        {
              $publication->{"container-title"} = htmlentities($this->get_event_title(), ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE , 'UTF-8', false);
         }
         else
