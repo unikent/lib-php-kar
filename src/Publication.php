@@ -573,7 +573,20 @@ class Publication
 
         $publication->performance_type = htmlentities($this->get_performance_type(), ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE , 'UTF-8', false);
 
-        $publication->{"container-title"} = htmlentities($this->get_book_title(), ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE , 'UTF-8', false);
+
+        // Articles should use "publication" rather than book title
+        if($publication->type == 'article')
+        {
+            $publication->{"container-title"} = htmlentities($this->get_publication(), ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE , 'UTF-8', false);
+        } // Conference items should use event title.
+        elseif($publication->type == 'paper-conference')
+             $publication->{"container-title"} = htmlentities($this->get_event_title(), ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE , 'UTF-8', false);
+        }
+        else
+        {
+            $publication->{"container-title"} = htmlentities($this->get_book_title(), ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE , 'UTF-8', false);
+        }
+
 
         $publication->{"number-of-pages"} = htmlentities($this->get_pages(), ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE , 'UTF-8', false);
 
