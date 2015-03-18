@@ -574,8 +574,8 @@ class Publication
         $publication->performance_type = htmlentities($this->get_performance_type(), ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE , 'UTF-8', false);
 
 
-        // Articles should use "publication" rather than book title
-        if($publication->type == 'article')
+        // Articles & reports should use "publication" rather than book title
+        if($publication->type == 'article' || $publication->type == 'report' || $publication->type == 'webpage')
         {
             $publication->{"container-title"} = htmlentities($this->get_publication(), ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE , 'UTF-8', false);
         } // Conference items should use event title.
