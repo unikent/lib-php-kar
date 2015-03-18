@@ -77,14 +77,7 @@ class Person
      * @param object $data The data.
      */
     public static function create_from_api($api, $data) {
-        static $cache = array();
-
-        if (!isset($cache[$data->email])) {
-            $person = new static($api, $data->given_name, $data->family_name, $data->email);
-            $cache[$data->email] = $person;
-        }
-
-        return $cache[$data->email];
+        return new static($api, $data->given_name, $data->family_name, $data->email);
     }
 
     /**
