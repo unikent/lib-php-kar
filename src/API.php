@@ -132,6 +132,10 @@ class API
         }
 
         foreach ((array)$data as $eprintid => $people) {
+            usort($people, function($a, $b) {
+                return $a->id > $b->id;
+            });
+
             $this->_internal_cache->set($eprintid . '_people', $people);
         }
     }
