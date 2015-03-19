@@ -239,7 +239,7 @@ class API
             }
 
             $object = Person::create_from_api($this, $v);
-            $people[$v->type][$v->id] = $object;
+            $people[$v->type][] = $object;
         }
 
         return $people;
