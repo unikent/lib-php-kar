@@ -225,9 +225,9 @@ class Publication
     }
 
     /**
-     * Returns the pretty type.
+     * Returns an array of valid types.
      */
-    public function get_pretty_type() {
+    public static function get_valid_types() {
         static $map = array(
             'book_section' => 'Book section',
             'conference_item' => 'Conference or workshop item',
@@ -245,6 +245,15 @@ class Publication
             'thesis' => 'Thesis',
             'video' => 'Visual media'
         );
+
+        return $map;
+    }
+
+    /**
+     * Returns the pretty type.
+     */
+    public function get_pretty_type() {
+        $map = static::get_valid_types();
 
         $type = $this->get_type();
         $type = str_replace('\\', '', $type);
