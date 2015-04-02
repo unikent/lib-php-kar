@@ -65,7 +65,7 @@
   <macro name="title">
     <choose>
       <if type="bill book graphic legal_case legislation motion_picture report song thesis webpage" match="any">
-        <text variable="title" font-style="italic" text-case="title"/>
+        <text variable="title" font-style="italic" />
       </if>
       <else>
         <text variable="title"/>
@@ -75,7 +75,7 @@
   <macro name="title-substitute">
     <choose>
       <if type="bill book graphic legal_case legislation motion_picture report song thesis webpage" match="any">
-        <text variable="title" font-style="italic" text-case="title"/>
+        <text variable="title" font-style="italic"/>
       </if>
       <else-if type="broadcast">
         <choose>
@@ -204,9 +204,9 @@
         <else-if type="chapter paper-conference" match="any">
           <text macro="title" prefix=" " suffix="."/>
           <group prefix=" " delimiter=" ">
-            <text term="in" text-case="capitalize-first" suffix=":"/>
+            <text term="in" suffix=":"/>
             <text macro="editor"/>
-            <text variable="container-title" font-style="italic" suffix="." text-case="title"/>
+            <text variable="container-title" font-style="italic" suffix="."/>
             <text macro="edition"/>
             <group suffix="." delimiter=", ">
               <text macro="publisher"/>
