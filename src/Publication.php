@@ -537,7 +537,7 @@ class Publication
         $parser = $this->get_citeproc_parser($csl);
 
         // Return formatted citation.
-        return $parser->render($this->get_for_citeproc());
+        return $parser->render($this->get_for_citeproc($csl));
     }
 
     protected function encode_for_citeproc($string){
@@ -548,13 +548,13 @@ class Publication
      *
      * @internal
      */
-    protected function get_for_citeproc() {
+    protected function get_for_citeproc($csl) {
         // Format data in order to build
         $publication = new \stdClass();
 
         // Add basic params to pub object
         $publication->id = $this->encode_for_citeproc($this->get_id());
-        $publication->type = $this->encode_for_citeproc($this->get_citeproc_type());
+        $publication->type = $this->encode_for_citeproc($this->get_citeproc_type($csl));
 
         $publication->DOI = $this->encode_for_citeproc($this->get_id_number());
         $publication->ISSN = $this->encode_for_citeproc($this->get_issn());
@@ -640,7 +640,7 @@ class Publication
      * 
      * @return array Mappings.
      */
-    public function get_citeproc_type() {
+    public function get_citeproc_type($csl) {
         $kartype = $this->get_type();
 
         switch ($kartype) {
@@ -661,7 +661,7 @@ class Publication
 
             // "Probably" right.
             case 'article':
-                return "article";
+                return $csl==='apa'?'article-journal':"article";
             case 'book':
             case 'edbook':
                 return "book";
@@ -693,7 +693,7 @@ class Publication
             // Return article as the default.
             case 'other':
             default:
-                return "article";
+                return $csl==='apa'?'article-journal':"article";
         }
     }
 
