@@ -540,65 +540,68 @@ class Publication
         return $parser->render($this->get_for_citeproc());
     }
 
+    protected function encode_for_citeproc($string){
+        return mb_encode_numericentity($string,array(0x80, 0xffff, 0, 0xffff),'UTF-8');
+    }
     /**
      * Format for CiteProc.
-     * 
+     *
      * @internal
      */
     protected function get_for_citeproc() {
         // Format data in order to build
         $publication = new \stdClass();
-        
+
         // Add basic params to pub object
-        $publication->id = htmlentities($this->get_id(), ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE , 'UTF-8', false);
-        $publication->type = htmlentities($this->get_citeproc_type(), ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE , 'UTF-8', false);
+        $publication->id = $this->encode_for_citeproc($this->get_id());
+        $publication->type = $this->encode_for_citeproc($this->get_citeproc_type());
 
-        $publication->DOI = htmlentities($this->get_id_number(), ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE , 'UTF-8', false);
-        $publication->ISSN = htmlentities($this->get_issn(), ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE , 'UTF-8', false);
-        $publication->ISBN = htmlentities($this->get_isbn(), ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE , 'UTF-8', false);
+        $publication->DOI = $this->encode_for_citeproc($this->get_id_number());
+        $publication->ISSN = $this->encode_for_citeproc($this->get_issn());
+        $publication->ISBN = $this->encode_for_citeproc($this->get_isbn());
 
-     
-        $publication->abstract = htmlentities($this->get_abstract(), ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE , 'UTF-8', false);
-        $publication->number = htmlentities($this->get_number(), ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE , 'UTF-8', false);
-        $publication->page = htmlentities($this->get_page_range(), ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE , 'UTF-8', false);
 
-        $publication->publisher = htmlentities($this->get_publisher(), ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE , 'UTF-8', false);
-        $publication->{"publisher-place"} = htmlentities($this->get_place_of_pub(), ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE , 'UTF-8', false);
+        $publication->abstract = $this->encode_for_citeproc($this->get_abstract());
+        $publication->number = $this->encode_for_citeproc($this->get_number());
+        $publication->page = $this->encode_for_citeproc($this->get_page_range());
 
-        $publication->title = htmlentities($this->get_title(), ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE , 'UTF-8', false);
-        $publication->URL = htmlentities($this->get_official_url(), ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE , 'UTF-8', false);
+        $publication->publisher = $this->encode_for_citeproc($this->get_publisher());
+        $publication->{"publisher-place"} = $this->encode_for_citeproc($this->get_place_of_pub());
 
-        $publication->volume = htmlentities($this->get_volume(), ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE , 'UTF-8', false);
+        $publication->title = $this->encode_for_citeproc($this->get_title());
+        $publication->URL = $this->encode_for_citeproc($this->get_official_url());
+
+        $publication->volume = $this->encode_for_citeproc($this->get_volume());
         $publication->issued = (object) array(
-            "date-parts" => array(array(htmlentities($this->get_year(), ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE , 'UTF-8', false))),
-            "literal" => htmlentities($this->get_year(), ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE , 'UTF-8', false)
+            "date-parts" => array(array($this->encode_for_citeproc($this->get_year()))),
+            "literal" => $this->encode_for_citeproc($this->get_year())
         );
 
-        $publication->event = htmlentities($this->get_event_title(), ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE , 'UTF-8', false);
-        $publication->{"event-date"} = htmlentities($this->get_event_dates(), ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE , 'UTF-8', false);
-        $publication->{"event-place"} = htmlentities($this->get_event_location(), ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE , 'UTF-8', false);
+        $publication->event = $this->encode_for_citeproc($this->get_event_title());
+        $publication->{"event-date"} = $this->encode_for_citeproc($this->get_event_dates());
+        $publication->{"event-place"} = $this->encode_for_citeproc($this->get_event_location());
 
-        $publication->medium = htmlentities($this->get_output_media(), ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE , 'UTF-8', false);
+        $publication->medium = $this->encode_for_citeproc($this->get_output_media());
 
-        $publication->performance_type = htmlentities($this->get_performance_type(), ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE , 'UTF-8', false);
+        $publication->performance_type = $this->encode_for_citeproc($this->get_performance_type());
 
 
         // Articles & reports should use "publication" rather than book title
         if($publication->type == 'article' || $publication->type == 'report' || $publication->type == 'webpage')
         {
-            $publication->{"container-title"} = htmlentities($this->get_publication(), ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE , 'UTF-8', false);
+            $publication->{"container-title"} = $this->encode_for_citeproc($this->get_publication());
         } // Conference items should use event title.
         elseif($publication->type == 'paper-conference')
         {
-             $publication->{"container-title"} = htmlentities($this->get_event_title(), ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE , 'UTF-8', false);
+             $publication->{"container-title"} = $this->encode_for_citeproc($this->get_event_title());
         }
         else
         {
-            $publication->{"container-title"} = htmlentities($this->get_book_title(), ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE , 'UTF-8', false);
+            $publication->{"container-title"} = $this->encode_for_citeproc($this->get_book_title());
         }
 
 
-        $publication->{"number-of-pages"} = htmlentities($this->get_pages(), ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE , 'UTF-8', false);
+        $publication->{"number-of-pages"} = $this->encode_for_citeproc($this->get_pages());
 
         // Convert author & editor fields
         $publication->author = array();
@@ -606,16 +609,16 @@ class Publication
 
         foreach ($this->get_authors() as $author) {
             $record = array(
-                "given" => htmlentities($author->get_firstname(), ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE , 'UTF-8', false),
-                "family" => htmlentities($author->get_lastname(), ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE , 'UTF-8', false)
+                "given" => $this->encode_for_citeproc($author->get_firstname()),
+                "family" => $this->encode_for_citeproc($author->get_lastname())
             );
             $publication->author[] = (object)$record;
         }
 
         foreach ($this->get_editors() as $editor) {
             $record = array(
-                "given" => htmlentities($editor->get_firstname(), ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE , 'UTF-8', false),
-                "family" => htmlentities($editor->get_lastname(), ENT_QUOTES | ENT_HTML5 | ENT_SUBSTITUTE , 'UTF-8', false)
+                "given" => $this->encode_for_citeproc($editor->get_firstname()),
+                "family" => $this->encode_for_citeproc($editor->get_lastname())
             );
             $publication->editor[] = (object)$record;
         }
@@ -627,6 +630,7 @@ class Publication
         $publication->edition = '';
         $publication->issue = '';
         $publication->note = '';
+
         return $publication;
     }
 
