@@ -537,7 +537,7 @@ class Publication
         $parser = $this->get_citeproc_parser($csl);
 
         // Return formatted citation.
-        return $parser->render($this->get_for_citeproc($csl));
+        return static::tidy_citation($parser->render($this->get_for_citeproc($csl)));
     }
 
     protected function encode_for_citeproc($string){
@@ -720,5 +720,19 @@ class Publication
         }
 
         return $parsers[$csl];
+    }
+
+    /**
+     * Tidy up after citeproc parser has done its thing.
+     *
+     * @param string $citation The citation to tidy up.
+     */
+    protected static function tidy_citation($citation) {
+        // remove full-stops when strings are already punctuated.
+        foreach (array('?</span>.' => '?</span>', '!</span>.' => '!</span>') as $search => $replace) {
+            $citation = str_replace($search, $replace, $citation);
+        }
+
+        return $citation;
     }
 }
