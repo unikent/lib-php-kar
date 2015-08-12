@@ -587,7 +587,7 @@ class Publication
 
 
         // Articles & reports should use "publication" rather than book title
-        if($publication->type == 'article' || $publication->type == 'article-journal' || $publication->type == 'report' || $publication->type == 'webpage')
+        if($publication->type == 'article' || $publication->type == 'article-journal' || $publication->type == 'report' || $publication->type == 'webpage' || $publication->type == 'review')
         {
             $publication->{"container-title"} = $this->encode_for_citeproc($this->get_publication());
         } // Conference items should use event title.
