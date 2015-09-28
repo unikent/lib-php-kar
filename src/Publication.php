@@ -634,9 +634,11 @@ class Publication
         $publication->editor = array();
 
         foreach ($this->get_authors() as $author) {
+            $firstname = ($csl !== 'chicago-author-date') ? substr($author->get_firstname(), 0, 1) : $author->get_firstname();
+            $lastname = $author->get_lastname();
             $record = array(
-                "given" => $this->encode_for_citeproc($author->get_firstname()),
-                "family" => $this->encode_for_citeproc($author->get_lastname())
+                "given" => $this->encode_for_citeproc($firstname),
+                "family" => $this->encode_for_citeproc($lastname)
             );
             $publication->author[] = (object)$record;
         }
