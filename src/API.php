@@ -40,7 +40,7 @@ class API
 
     /**
      * CURL Proxy.
-     * 
+     *
      * @internal
      * @var string
      */
@@ -111,7 +111,7 @@ class API
         $this->_timeout = $timeout;
     }
 
-     /**
+    /**
      * Set a custom CURL proxy
      *
      * @param string $proxy CURL proxy url
@@ -157,6 +157,22 @@ class API
     }
 
     /**
+     * Cache files for eprintids.
+     */
+    private function cache_files($ids) {
+        $ids = urlencode(join(',', $ids));
+        $json = $this->curl($this->_url . "/cgi/api/get_files?q=$ids");
+        $data = json_decode($json);
+        if (!$data) {
+            return;
+        }
+
+        foreach ((array)$data as $eprintid => $files) {
+            $this->_internal_cache->set($eprintid . '_files', $files);
+        }
+    }
+
+    /**
      * Search KAR for a given x.
      *
      * @param string $url The URL to grab.
@@ -182,6 +198,7 @@ class API
 
         $this->cache_people($ids);
         $this->cache_divisions($ids);
+        $this->cache_files($ids);
 
         return $objects;
     }
@@ -233,6 +250,10 @@ class API
         $people = array();
 
         $data = $this->_internal_cache->get($eprintid . '_people');
+        if (!is_array($data)) {
+            return null;
+        }
+
         foreach ($data as $k => $v) {
             if (!isset($people[$v->type])) {
                 $people[$v->type] = array();
@@ -265,6 +286,30 @@ class API
     }
 
     /**
+     * Return all files associated with a publication.
+     *
+     * @internal
+     * @param string $eprintid The eprint id.
+     */
+    public function get_files($eprintid) {
+        if (!isset($this->_internal_cache->{$eprintid . '_files'})) {
+            $this->cache_files(array($eprintid));
+        }
+
+        $data = $this->_internal_cache->get($eprintid . '_files');
+        if (!is_array($data)) {
+            return null;
+        }
+
+        $files = array();
+        foreach ($data as $k => $v) {
+            $files[] = File::create_from_api($this, $eprintid, $v);
+        }
+
+        return $files;
+    }
+
+    /**
      * Returns the URL for a person.
      *
      * @param string $email The person's email address.
@@ -272,6 +317,17 @@ class API
     public function get_person_url($email) {
         $email = strtolower($email);
         return $this->get_url() . "/view/email/" . $this->encode_string($email) . ".html";
+    }
+
+    /**
+     * Returns the URL for a file.
+     *
+     * @param string $eprintid The eprintid.
+     * @param string $pos The file position.
+     * @param string $filename The filename.
+     */
+    public function get_file_url($eprintid, $pos, $filename) {
+        return $this->get_url() . "/{$eprintid}/{$pos}/" . $this->encode_string($filename);
     }
 
     /**
@@ -332,7 +388,7 @@ class API
         if (!empty($this->_proxy)) {
             curl_setopt($ch, CURLOPT_PROXY, $this->_proxy);
         }
-        
+
         $result = curl_exec($ch);
 
         if ($this->_cache !== null) {

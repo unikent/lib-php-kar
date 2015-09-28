@@ -151,7 +151,7 @@ class Division
     }
 
     /**
-     * Return my Name.
+     * Return my name.
      */
     public function get_name() {
         return $this->_name;

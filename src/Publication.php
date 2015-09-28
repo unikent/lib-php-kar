@@ -15,7 +15,7 @@ class Publication
 {
     /**
      * API.
-     * 
+     *
      * @internal
      * @param object
      */
@@ -23,7 +23,7 @@ class Publication
 
     /**
      * Data.
-     * 
+     *
      * @internal
      * @param array
      */
@@ -31,7 +31,7 @@ class Publication
 
     /**
      * People.
-     * 
+     *
      * @internal
      * @param array
      */
@@ -39,11 +39,19 @@ class Publication
 
     /**
      * Divisions.
-     * 
+     *
      * @internal
      * @param array
      */
     private $_divisions;
+
+    /**
+     * Files.
+     *
+     * @internal
+     * @param array
+     */
+    private $_files;
 
     /**
      * Constructor.
@@ -56,6 +64,7 @@ class Publication
         $this->_data = array();
         $this->_people = null;
         $this->_divisions = null;
+        $this->_files = null;
     }
 
     /**
@@ -453,57 +462,78 @@ class Publication
     }
 
     /**
-     * Returns the publication's document's file name.
+     * Get all files associated with this publication.
      */
-    public function get_filename() {
-        $fileinfo = $this->_data['fileinfo'];
-        if (strpos($fileinfo, ';') === false) {
-            return "";
+    private function build_file_cache() {
+        if ($this->_files !== null) {
+            return;
         }
 
-        $parts = explode(';', $fileinfo);
-        $filename = array_pop($parts);
+        $eprintid = $this->get_id();
+        if (empty($eprintid)) {
+            return;
+        }
 
-        return $filename;
+        // Grab files from the API.
+        $this->_files = $this->_api->get_files($eprintid);
+    }
+
+    /**
+     * Returns files this item belongs to.
+     */
+    public function get_files() {
+        $this->build_file_cache();
+        return $this->_files;
+    }
+
+    /**
+     * Returns the publication's document's file name.
+     *
+     * @deprecated 3.0 See get_files()
+     */
+    public function get_filename() {
+        error_log("\\unikent\\KAR\\Publication::get_filename is deprecated - please use get_files instead.");
+        $files = $this->get_files();
+        if (empty($files)) {
+            return null;
+        }
+
+        $file = reset($files);
+        return "/" . $this->get_id() . "/" . $file->get_pos() . "/" . $this->_api->encode_string($file->get_filename());
     }
 
     /**
      * Returns the publication's document's URL.
+     *
+     * @deprecated 3.0 See File::get_url()
      */
     public function get_file_url() {
-        return $this->_api->get_url() . "/" . $this->get_filename();
+        error_log("\\unikent\\KAR\\Publication::get_file_url is deprecated - please use File API instead.");
+
+        $files = $this->get_files();
+        if (empty($files)) {
+            return null;
+        }
+
+        $file = reset($files);
+        return $file->get_url();
     }
 
     /**
      * Returns the publication's document's Type.
+     *
+     * @deprecated 3.0 See File::get_url()
      */
     public function get_file_type() {
-        $filename = $this->get_filename();
-        if (strpos($filename, '.') === false) {
-            // Try and guess based on fileinfo.
-            $fileinfo = $this->_data['fileinfo'];
+        error_log("\\unikent\\KAR\\Publication::get_file_type is deprecated - please use File API instead.");
 
-            if (strpos($fileinfo, 'application_pdf') !== false) {
-                return "pdf";
-            }
-
-            if (strpos($fileinfo, 'application_msword') !== false) {
-                return "docx";
-            }
-
-            if (strpos($fileinfo, 'application_postscript') !== false) {
-                return "ps";
-            }
-
-            if (strpos($fileinfo, 'ms-powerpoint') !== false) {
-                return "pptx";
-            }
-
-            return "";
+        $files = $this->get_files();
+        if (empty($files)) {
+            return null;
         }
 
-        $filetype = substr($filename, strrpos($filename, '.') + 1);
-        return strtolower($filetype);
+        $file = reset($files);
+        return $file->get_mimetype();
     }
 
     /**
@@ -540,9 +570,13 @@ class Publication
         return static::tidy_citation($parser->render($this->get_for_citeproc($csl)));
     }
 
-    protected function encode_for_citeproc($string){
-        return mb_encode_numericentity($string,array(0x80, 0xffff, 0, 0xffff),'UTF-8');
+    /**
+     * Encode for citeproc.
+     */
+    protected function encode_for_citeproc($string) {
+        return mb_encode_numericentity($string, array(0x80, 0xffff, 0, 0xffff), 'UTF-8');
     }
+
     /**
      * Format for CiteProc.
      *
@@ -559,7 +593,6 @@ class Publication
         $publication->DOI = $this->encode_for_citeproc($this->get_id_number());
         $publication->ISSN = $this->encode_for_citeproc($this->get_issn());
         $publication->ISBN = $this->encode_for_citeproc($this->get_isbn());
-
 
         $publication->abstract = $this->encode_for_citeproc($this->get_abstract());
         $publication->number = $this->encode_for_citeproc($this->get_number());
@@ -585,21 +618,14 @@ class Publication
 
         $publication->performance_type = $this->encode_for_citeproc($this->get_performance_type());
 
-
         // Articles & reports should use "publication" rather than book title
-        if($publication->type == 'article' || $publication->type == 'article-journal' || $publication->type == 'report' || $publication->type == 'webpage' || $publication->type == 'review')
-        {
+        if (in_array($publication->type, array('article', 'article-journal', 'report', 'webpage', 'review'))) {
             $publication->{"container-title"} = $this->encode_for_citeproc($this->get_publication());
-        } // Conference items should use event title.
-        elseif($publication->type == 'paper-conference')
-        {
+        } else if ($publication->type == 'paper-conference') {
              $publication->{"container-title"} = $this->encode_for_citeproc($this->get_event_title());
-        }
-        else
-        {
+        } else {
             $publication->{"container-title"} = $this->encode_for_citeproc($this->get_book_title());
         }
-
 
         $publication->{"number-of-pages"} = $this->encode_for_citeproc($this->get_pages());
 
@@ -625,7 +651,7 @@ class Publication
 
         // Currently unused fields - left blank.
         $publication->{"citation-label"} = '';
-       
+
         $publication->documents = array();
         $publication->edition = '';
         $publication->issue = '';
@@ -637,7 +663,7 @@ class Publication
 
     /**
      * Converts KAR type to CiteProc type.
-     * 
+     *
      * @return array Mappings.
      */
     public function get_citeproc_type($csl) {
@@ -661,7 +687,7 @@ class Publication
 
             // "Probably" right.
             case 'article':
-                return $csl==='apa'?'article-journal':"article";
+                return $csl === 'apa' ? 'article-journal' : 'article';
             case 'book':
             case 'edbook':
                 return "book";
@@ -693,13 +719,13 @@ class Publication
             // Return article as the default.
             case 'other':
             default:
-                return $csl==='apa'?'article-journal':"article";
+                return $csl === 'apa' ? 'article-journal' : 'article';
         }
     }
 
     /**
      * Format for CiteProc
-     * 
+     *
      * @internal
      * @param string $csl - reference format csl APA/IEEE etc
      * @return object $parser - Parser for given reference format
