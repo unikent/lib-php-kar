@@ -83,7 +83,7 @@ class File
         $obj = new static($api);
         $obj->_id = $data->id;
         $obj->_eprintid = $eprintid;
-        $obj->_pos = $data->pos;
+        $obj->_pos = !empty($data->pos) ? (string)$data->pos : '0';
         $obj->_filename = $data->filename;
         $obj->_mimetype = $data->mimetype;
 

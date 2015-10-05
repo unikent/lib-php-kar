@@ -327,7 +327,7 @@ class API
      * @param string $filename The filename.
      */
     public function get_file_url($eprintid, $pos, $filename) {
-        return $this->get_url() . "/{$eprintid}/{$pos}/" . $this->encode_string($filename);
+        return $this->get_url() . "/{$eprintid}/{$pos}/" . $filename;
     }
 
     /**
