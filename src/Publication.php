@@ -238,10 +238,12 @@ class Publication
      */
     public static function get_valid_types() {
         static $map = array(
+            'article' => 'Article',
             'book_section' => 'Book section',
             'conference_item' => 'Conference or workshop item',
             'dataset' => 'Datasets / databases',
             'edbook' => 'Edited book',
+            'book' => 'Book',
             'exhibition' => 'Show / exhibition',
             'internet' => 'Internet publication',
             'monograph' => 'Monograph',
@@ -252,7 +254,17 @@ class Publication
             'review' => 'Review',
             'scholarlyed' => 'Scholarly edition',
             'thesis' => 'Thesis',
-            'video' => 'Visual media'
+            'video' => 'Visual media',
+            'artefact' => 'Artefact',
+            'composition' => 'Composition',
+            'image' => 'Image',
+            'audio' => 'Audio',
+            'experiment' => 'Experiment',
+            'confidential_report' => 'Confidential report',
+            'design' => 'Design',
+            'device' => 'Device',
+            'edjournal' => 'EdJournal',
+            'software' => 'Software'
         );
 
         return $map;
