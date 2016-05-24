@@ -263,7 +263,7 @@ class Publication
             'confidential_report' => 'Confidential report',
             'design' => 'Design',
             'device' => 'Device',
-            'edjournal' => 'EdJournal',
+            'edjournal' => 'Edited journal',
             'software' => 'Software'
         );
 
