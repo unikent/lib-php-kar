@@ -5,7 +5,6 @@
  * @copyright  2015 Skylar Kelty <S.Kelty@kent.ac.uk>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 namespace unikent\KAR;
 
 /**
@@ -17,6 +16,7 @@ class File
      * API.
      *
      * @internal
+     *
      * @param object
      */
     private $_api;
@@ -25,6 +25,7 @@ class File
      * ID.
      *
      * @internal
+     *
      * @param string
      */
     private $_id;
@@ -33,6 +34,7 @@ class File
      * eprintID.
      *
      * @internal
+     *
      * @param string
      */
     private $_eprintid;
@@ -41,6 +43,7 @@ class File
      * Position.
      *
      * @internal
+     *
      * @param string
      */
     private $_pos;
@@ -49,6 +52,7 @@ class File
      * Filename.
      *
      * @internal
+     *
      * @param string
      */
     private $_filename;
@@ -57,18 +61,20 @@ class File
      * Mimetype.
      *
      * @internal
+     *
      * @param string
      */
     private $_mimetype;
-
 
     /**
      * Constructor.
      *
      * @internal
+     *
      * @param object $api The API we are related to.
      */
-    private function __construct($api) {
+    private function __construct($api)
+    {
         $this->_api = $api;
     }
 
@@ -76,14 +82,16 @@ class File
      * Create a file from a JSON object.
      *
      * @internal
-     * @param object $api The API we are related to.
+     *
+     * @param object $api  The API we are related to.
      * @param object $data The data.
      */
-    public static function create_from_api($api, $eprintid, $data) {
+    public static function create_from_api($api, $eprintid, $data)
+    {
         $obj = new static($api);
         $obj->_id = $data->id;
         $obj->_eprintid = $eprintid;
-        $obj->_pos = (string)$data->pos;
+        $obj->_pos = (string) $data->pos;
         $obj->_filename = $data->filename;
         $obj->_mimetype = $data->mimetype;
 
@@ -93,42 +101,48 @@ class File
     /**
      * Return my ID.
      */
-    public function get_id() {
+    public function get_id()
+    {
         return $this->_id;
     }
 
     /**
      * Return my position.
      */
-    public function get_pos() {
+    public function get_pos()
+    {
         return $this->_pos;
     }
 
     /**
      * Return my filename.
      */
-    public function get_filename() {
+    public function get_filename()
+    {
         return $this->_filename;
     }
 
     /**
      * Return my mimetype.
      */
-    public function get_mimetype() {
+    public function get_mimetype()
+    {
         return $this->_mimetype;
     }
 
     /**
      * Return my URL.
      */
-    public function get_url() {
+    public function get_url()
+    {
         return $this->_api->get_file_url($this->_eprintid, $this->_pos, $this->_filename);
     }
 
     /**
      * toString.
      */
-    public function __toString() {
+    public function __toString()
+    {
         return $this->get_url();
     }
 }
