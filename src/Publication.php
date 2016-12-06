@@ -574,7 +574,7 @@ class Publication
      * Encode for citeproc.
      */
     protected function encode_for_citeproc($string) {
-        return mb_encode_numericentity($string, array(0x80, 0xffff, 0, 0xffff), 'UTF-8');
+        return $string;
     }
 
     /**
@@ -650,6 +650,7 @@ class Publication
             );
             $publication->editor[] = (object)$record;
         }
+
 
         // Currently unused fields - left blank.
         $publication->{"citation-label"} = '';
