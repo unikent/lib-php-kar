@@ -5,8 +5,7 @@
  * @copyright  2014 Skylar Kelty <S.Kelty@kent.ac.uk>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
-require_once(dirname(__FILE__).'/../vendor/autoload.php');
+require_once dirname(__FILE__) . '/../vendor/autoload.php';
 
 if (!isset($argv[1])) {
     die("Usage: php run.php <eprintid>\n");
