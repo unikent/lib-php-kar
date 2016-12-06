@@ -562,62 +562,6 @@ class Publication
     }
 
     /**
-     * Returns the publication's document's file name.
-     *
-     * @deprecated 3.0 See get_files()
-     */
-    public function get_filename()
-    {
-        error_log('\\unikent\\KAR\\Publication::get_filename is deprecated - please use get_files instead.');
-        $files = $this->get_files();
-        if (empty($files)) {
-            return;
-        }
-
-        $file = reset($files);
-
-        return '/' . $this->get_id() . '/' . $file->get_pos() . '/' . $this->_api->encode_string($file->get_filename());
-    }
-
-    /**
-     * Returns the publication's document's URL.
-     *
-     * @deprecated 3.0 See File::get_url()
-     */
-    public function get_file_url()
-    {
-        error_log('\\unikent\\KAR\\Publication::get_file_url is deprecated - please use File API instead.');
-
-        $files = $this->get_files();
-        if (empty($files)) {
-            return;
-        }
-
-        $file = reset($files);
-
-        return $file->get_url();
-    }
-
-    /**
-     * Returns the publication's document's Type.
-     *
-     * @deprecated 3.0 See File::get_url()
-     */
-    public function get_file_type()
-    {
-        error_log('\\unikent\\KAR\\Publication::get_file_type is deprecated - please use File API instead.');
-
-        $files = $this->get_files();
-        if (empty($files)) {
-            return;
-        }
-
-        $file = reset($files);
-
-        return $file->get_mimetype();
-    }
-
-    /**
      * Returns the publication URL.
      */
     public function get_url()

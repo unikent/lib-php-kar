@@ -40,15 +40,6 @@ class File
     private $_eprintid;
 
     /**
-     * Position.
-     *
-     * @internal
-     *
-     * @param string
-     */
-    private $_pos;
-
-    /**
      * Filename.
      *
      * @internal
@@ -65,6 +56,15 @@ class File
      * @param string
      */
     private $_mimetype;
+
+    /**
+     * URL of document
+     *
+     * @internal
+     *
+     * @param string
+     */
+    private $_url;
 
     /**
      * Constructor.
@@ -91,10 +91,9 @@ class File
         $obj = new static($api);
         $obj->_id = $data->id;
         $obj->_eprintid = $eprintid;
-        $obj->_pos = (string) $data->pos;
         $obj->_filename = $data->filename;
         $obj->_mimetype = $data->mimetype;
-
+        $obj->_url = (string)$data->url;
         return $obj;
     }
 
@@ -104,14 +103,6 @@ class File
     public function get_id()
     {
         return $this->_id;
-    }
-
-    /**
-     * Return my position.
-     */
-    public function get_pos()
-    {
-        return $this->_pos;
     }
 
     /**
@@ -133,9 +124,8 @@ class File
     /**
      * Return my URL.
      */
-    public function get_url()
-    {
-        return $this->_api->get_file_url($this->_eprintid, $this->_pos, $this->_filename);
+    public function get_url() {
+        return $this->_url;
     }
 
     /**
