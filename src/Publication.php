@@ -777,7 +777,7 @@ class Publication
             }
 
             $cslcontent = file_get_contents($filename);
-            $parsers[$csl] = new \academicpuma\citeproc\CiteProc($cslcontent);
+            $parsers[$csl] = new \AcademicPuma\CiteProc\CiteProc($cslcontent);
         }
 
         return $parsers[$csl];
